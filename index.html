@@ -1,0 +1,431 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+<title>Intelligent Investing</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --black:#000000;
+    --white:#ffffff;
+    --gray:#929292;     /* labels */
+    --silver:#c7c7c7;   /* values / titles */
+    --abbey:#565b5e;    /* secondary / muted */
+    --divider:#1c1c1c;
+  }
+
+  *{ margin:0; padding:0; box-sizing:border-box; }
+
+  html,body{
+    height:100%;
+    width:100%;
+    background:#000;
+    overflow:hidden;
+    -webkit-font-smoothing:antialiased;
+    text-rendering:geometricPrecision;
+  }
+
+  /* Black backdrop — fills the window, centers the device both axes. */
+  #stage{
+    position:fixed;
+    inset:0;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    background:#000;
+    overflow:hidden;
+  }
+
+  /* Phone device — fixed mobile ratio (393 x 852 screen + bezel).
+     Scaled uniformly by JS to ~95% of the viewport height. */
+  #device{
+    position:relative;
+    flex:0 0 auto;
+    padding:14px;
+    background:#0c0c0c;
+    border:1.5px solid #262626;
+    border-radius:54px;
+    transform-origin:center center;
+  }
+
+  /* The screen — fixed mobile viewport; the page scrolls inside it. */
+  #screen{
+    position:relative;
+    width:393px;
+    height:852px;
+    overflow-y:auto;
+    overflow-x:hidden;
+    background:var(--black);
+    border-radius:40px;
+    scrollbar-width:none;
+    -ms-overflow-style:none;
+  }
+  #screen::-webkit-scrollbar{ display:none; }
+
+  /* The content — fixed mobile width, natural (tall) height, scrolls within. */
+  #frame{
+    position:relative;
+    width:393px;
+    background:var(--black);
+    color:var(--white);
+    font-family:'Inter', sans-serif;
+    font-weight:400;
+    font-feature-settings:'tnum' 1, 'lnum' 1;
+    overflow:hidden;
+  }
+
+  /* ---------- Header ---------- */
+  .header{ position:absolute; left:0; top:0; width:393px; height:71px; }
+  .header .divider{ position:absolute; left:0; right:0; bottom:0; height:1px; background:var(--divider); }
+  .logo{
+    position:absolute; left:30px; bottom:21px;
+    font-size:23px; font-weight:700; line-height:1;
+    letter-spacing:-1px; color:var(--white);
+    font-family:'Inter',sans-serif;
+  }
+  .h-icon{ position:absolute; color:var(--white); }
+  .h-search{ right:79px; bottom:24px; width:17px; height:17px; }
+  .h-nav{ right:30px; bottom:25px; width:17px; height:13px; }
+  .h-icon svg{ display:block; width:100%; height:100%; }
+
+  /* ---------- Generic ---------- */
+  .pad{ padding-left:13.5px; padding-right:13.5px; }
+  .hr{ height:1px; background:var(--divider); width:100%; }
+
+  .col{ display:flex; flex-direction:column; }
+  .end{ align-items:flex-end; text-align:right; }
+  .start{ align-items:flex-start; text-align:left; }
+
+  /* type tokens */
+  .t-label{ font-size:13px; letter-spacing:-0.22px; color:var(--gray); line-height:16.25px; }
+  .t-label-26{ font-size:13px; letter-spacing:-0.26px; color:var(--gray); line-height:normal; }
+  .t-title{ font-size:18px; letter-spacing:-0.36px; color:var(--silver); line-height:20.7px; }
+  .t-sub{ font-size:15px; letter-spacing:-0.3px; color:var(--abbey); line-height:18px; }
+  .t-15-silver{ font-size:15px; letter-spacing:-0.3px; color:var(--silver); line-height:normal; }
+  .t-22{ font-size:22px; letter-spacing:-0.44px; color:var(--white); line-height:normal; }
+  .t-13-silver{ font-size:13px; letter-spacing:-0.26px; color:var(--silver); line-height:normal; }
+
+  /* ---------- Total Value ---------- */
+  .total-value{
+    position:absolute; left:0; top:141px; width:393px;
+    display:flex; flex-direction:column; align-items:flex-end;
+    gap:7.625px; padding:11px 13.5px 0; text-align:right;
+  }
+  .total-value .amount{ font-size:28px; letter-spacing:-0.56px; line-height:normal; color:var(--white); }
+  .total-value .amount .cad{ color:var(--abbey); }
+
+  /* ---------- Sections ---------- */
+  .section{ position:absolute; left:0; width:393px; display:flex; flex-direction:column; gap:30px; }
+  .section.managed{ top:280.625px; }
+  .section.active{ top:753.31px; }
+
+  .s-inner{ display:flex; flex-direction:column; gap:50px; width:100%; }
+
+  .s-title-row{ display:flex; justify-content:space-between; align-items:flex-start; width:100%; }
+  .s-title-col{ display:flex; flex-direction:column; gap:10px; }
+
+  .data-col{ display:flex; flex-direction:column; align-items:flex-end; width:100%; }
+  .data-block{ display:flex; flex-direction:column; align-items:flex-end; gap:6px; width:100%; }
+
+  /* account switch */
+  .acct-sw{ display:flex; align-items:center; gap:5px; }
+  .acct-sw .chev{ width:7px; height:4px; color:var(--silver); }
+  .acct-sw .chev svg{ display:block; width:100%; height:100%; }
+
+  /* gain row */
+  .gain-row{ display:flex; align-items:center; justify-content:flex-end; gap:10px; width:100%; }
+  .gain-pair{ display:flex; align-items:center; gap:4px; }
+
+  /* position tables */
+  .pos-group{ display:flex; flex-direction:column; align-items:flex-end; gap:10px; width:100%; }
+  .pos-head{ font-size:15px; letter-spacing:-0.3px; color:var(--silver); line-height:17.25px; text-align:right; }
+  .pos-head .n{ margin-left:10px; }
+  .tbl{ display:flex; flex-direction:column; align-items:flex-end; gap:6px; width:100%; }
+  .tbl-row{ display:flex; align-items:center; justify-content:flex-end; gap:10px; }
+  .tbl-row .ticker{ color:var(--gray); font-size:13px; letter-spacing:-0.26px; line-height:normal; }
+  .tbl-row .pct{ color:var(--silver); font-size:13px; letter-spacing:-0.26px; line-height:normal; }
+  .view-all{ font-size:13px; letter-spacing:-0.26px; color:var(--silver); line-height:normal; text-align:right; width:100%; }
+
+  /* open orders */
+  .open-orders{ display:flex; align-items:center; justify-content:flex-end; gap:9.99px; width:100%; }
+  .open-orders .lbl,.open-orders .n{ font-size:15px; letter-spacing:-0.3px; color:var(--silver); line-height:17.25px; }
+
+  /* ---------- Holdings rows (rich Active Positions) ---------- */
+  .holdings{ display:flex; flex-direction:column; width:100%; }
+  .holding{
+    display:flex; justify-content:space-between; align-items:flex-start;
+    width:100%; gap:12px; padding:20px 0; text-align:left;
+  }
+  .holding:not(:first-child){ border-top:1px solid var(--divider); }
+
+  .h-left{ display:flex; flex-direction:column; align-items:flex-start; gap:9px; }
+  .h-ticker{
+    display:flex; align-items:baseline; gap:8px;
+    font-size:13px; font-weight:500; line-height:1.4; color:var(--white);
+    text-transform:uppercase; letter-spacing:0;
+  }
+  .h-ticker .spec{
+    font-style:italic; font-weight:400; font-size:9px;
+    color:#fdad00; text-transform:uppercase; letter-spacing:0;
+  }
+  .h-alloc{ font-size:13px; color:#a7a7a7; line-height:1.5; letter-spacing:-0.26px; }
+
+  .h-badges{ display:flex; flex-wrap:wrap; gap:6px; }
+  .badge{
+    font-size:7px; font-weight:500; line-height:1.3;
+    padding:5px; border-radius:3px; white-space:nowrap; letter-spacing:0;
+  }
+  .badge.green{ background:rgba(2,203,69,0.15); color:#02cb45; }
+  .badge.red{ background:rgba(253,2,0,0.15); color:#fd0200; }
+  .badge.yellow{ background:rgba(253,173,0,0.15); color:#fdad00; }
+  .badge.neutral{ background:rgba(255,255,255,0.1); color:var(--white); }
+
+  .h-right{ display:flex; flex-direction:column; align-items:flex-end; gap:6px; text-align:right; }
+  .h-price{ font-size:15px; color:var(--white); line-height:1; letter-spacing:-0.3px; }
+  .h-value{ font-size:13px; color:var(--silver); line-height:1.5; letter-spacing:-0.26px; }
+  .h-period{ font-size:13px; color:#a7a7a7; line-height:1.5; letter-spacing:-0.26px; }
+</style>
+</head>
+<body>
+<div id="stage">
+  <div id="device">
+    <div id="screen">
+      <div id="frame">
+
+    <!-- Header -->
+    <div class="header">
+      <div class="logo">//</div>
+      <div class="h-icon h-search">
+        <svg viewBox="0 0 17 17" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <circle cx="7" cy="7" r="6" stroke="currentColor" stroke-width="1.3"/>
+          <line x1="11.2" y1="11.2" x2="16" y2="16" stroke="currentColor" stroke-width="1.3"/>
+        </svg>
+      </div>
+      <div class="h-icon h-nav">
+        <svg viewBox="0 0 17 13" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <line x1="0" y1="1" x2="17" y2="1" stroke="currentColor" stroke-width="1.3"/>
+          <line x1="0" y1="6.5" x2="17" y2="6.5" stroke="currentColor" stroke-width="1.3"/>
+          <line x1="0" y1="12" x2="17" y2="12" stroke="currentColor" stroke-width="1.3"/>
+        </svg>
+      </div>
+      <div class="divider"></div>
+    </div>
+
+    <!-- Total Value -->
+    <div class="total-value">
+      <div class="t-label">Total Value</div>
+      <div class="amount">173,249.00&nbsp;<span class="cad">CAD</span></div>
+    </div>
+
+    <!-- Managed / Core -->
+    <div class="section managed pad">
+      <div class="hr"></div>
+      <div class="s-inner">
+        <div class="s-title-col">
+          <div class="t-title">Core</div>
+          <div class="t-sub">Managed</div>
+        </div>
+        <div class="data-col" style="gap:50px;">
+          <div class="data-block">
+            <div class="t-label">Value</div>
+            <div class="t-22">126,471.77</div>
+            <div class="gain-row">
+              <div class="t-label-26">All Time</div>
+              <div class="gain-pair">
+                <div class="t-13-silver">+6,365.65</div>
+                <div class="t-13-silver">(+5.3%)</div>
+              </div>
+            </div>
+          </div>
+          <div class="data-block">
+            <div class="t-label">Projection</div>
+            <div class="t-15-silver">1.68M</div>
+          </div>
+          <div class="tbl">
+            <div class="tbl-row"><div class="ticker">Equity (S&amp;P 500)</div><div class="pct">50%</div></div>
+            <div class="tbl-row"><div class="ticker">Fixed Income</div><div class="pct">25%</div></div>
+            <div class="tbl-row"><div class="ticker">Money Market</div><div class="pct">25%</div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Active / Self-Directed -->
+    <div class="section active pad">
+      <div class="hr"></div>
+      <div class="s-inner">
+        <div class="s-title-row">
+          <div class="s-title-col">
+            <div class="t-title">Active</div>
+            <div class="t-sub">Self-Directed</div>
+          </div>
+          <div class="acct-sw">
+            <div class="t-15-silver" style="line-height:20.25px;">RRSP</div>
+            <div class="chev">
+              <svg viewBox="0 0 7 4" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M0.5 0.5L3.5 3.5L6.5 0.5" stroke="currentColor" stroke-width="1"/>
+              </svg>
+            </div>
+          </div>
+        </div>
+
+        <div class="data-col" style="gap:53px;">
+
+          <!-- Value -->
+          <div class="data-block">
+            <div class="t-label">Value</div>
+            <div class="t-22">46,777.23</div>
+            <div class="gain-row">
+              <div class="t-label-26">All Time</div>
+              <div class="gain-pair">
+                <div class="t-13-silver">+2,353.46</div>
+                <div class="t-13-silver">(+5.3%)</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Cash -->
+          <div class="data-block">
+            <div class="t-label-26">Cash (10%)</div>
+            <div class="t-15-silver">4,677.72</div>
+          </div>
+
+          <!-- Active Positions -->
+          <div class="pos-group">
+            <div class="pos-head">Active Positions<span class="n">9</span></div>
+            <div class="holdings">
+
+              <div class="holding">
+                <div class="h-left">
+                  <div class="h-ticker">ORIO.TO</div>
+                  <div class="h-alloc">25%</div>
+                  <div class="h-badges">
+                    <span class="badge green">52 Week High</span>
+                    <span class="badge neutral">Earnings</span>
+                    <span class="badge yellow">Stock Split</span>
+                    <span class="badge yellow">Reverse Split</span>
+                  </div>
+                </div>
+                <div class="h-right">
+                  <div class="h-price">132.74 / 1.2%</div>
+                  <div class="h-value">354.90 / 52.3%</div>
+                  <div class="h-period">6 Months</div>
+                </div>
+              </div>
+
+              <div class="holding">
+                <div class="h-left">
+                  <div class="h-ticker">BWEN<span class="spec">Spec</span></div>
+                  <div class="h-alloc">20%</div>
+                  <div class="h-badges">
+                    <span class="badge yellow">Delisted</span>
+                  </div>
+                </div>
+                <div class="h-right">
+                  <div class="h-price">63.74 / 1.8%</div>
+                  <div class="h-value">254.93 / 22.3%</div>
+                  <div class="h-period">1Y 6M</div>
+                </div>
+              </div>
+
+              <div class="holding">
+                <div class="h-left">
+                  <div class="h-ticker">EOSCR</div>
+                  <div class="h-alloc">15%</div>
+                  <div class="h-badges">
+                    <span class="badge red">Top Mover</span>
+                    <span class="badge neutral">Open Order</span>
+                    <span class="badge yellow">Stock Halted</span>
+                  </div>
+                </div>
+                <div class="h-right">
+                  <div class="h-price">232.74 / 3.2%</div>
+                  <div class="h-value">54.93 / 2.3%</div>
+                  <div class="h-period">6 Months</div>
+                </div>
+              </div>
+
+              <div class="holding">
+                <div class="h-left">
+                  <div class="h-ticker">NVDA</div>
+                  <div class="h-alloc">12%</div>
+                </div>
+                <div class="h-right">
+                  <div class="h-price">132.74 / 1.2%</div>
+                  <div class="h-value">354.90 / 52.3%</div>
+                  <div class="h-period">6 Months</div>
+                </div>
+              </div>
+
+              <div class="holding">
+                <div class="h-left">
+                  <div class="h-ticker">AMD</div>
+                  <div class="h-alloc">8%</div>
+                  <div class="h-badges">
+                    <span class="badge green">Top Mover</span>
+                    <span class="badge neutral">Order Complete</span>
+                  </div>
+                </div>
+                <div class="h-right">
+                  <div class="h-price">63.74 / 1.8%</div>
+                  <div class="h-value">254.93 / 22.3%</div>
+                  <div class="h-period">1Y 6M</div>
+                </div>
+              </div>
+
+            </div>
+            <div class="view-all">View All</div>
+          </div>
+
+          <!-- Under Review -->
+          <div class="pos-group">
+            <div class="pos-head">Under Review<span class="n">5</span></div>
+            <div class="tbl">
+              <div class="tbl-row"><div class="ticker">ORIO.TO</div></div>
+              <div class="tbl-row"><div class="ticker">BWEN</div></div>
+              <div class="tbl-row"><div class="ticker">EOSCR</div></div>
+            </div>
+            <div class="view-all">View All</div>
+          </div>
+
+          <!-- Open Orders -->
+          <div class="open-orders">
+            <div class="lbl">Open Orders</div>
+            <div class="n">2</div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  // 1) Size the content to its true height so the screen scrolls.
+  // 2) Scale the whole phone (fixed mobile ratio) to ~95% of the viewport
+  //    height — capped to the width so it never overflows — centered both axes.
+  (function () {
+    var device = document.getElementById('device');
+    var frame = document.getElementById('frame');
+    var active = document.querySelector('.section.active');
+    function fit() {
+      frame.style.height = (active.offsetTop + active.offsetHeight + 40) + 'px';
+      device.style.transform = 'none';
+      var dw = device.offsetWidth, dh = device.offsetHeight;
+      var s = Math.min(0.95 * window.innerHeight / dh, 0.95 * window.innerWidth / dw);
+      device.style.transform = 'scale(' + s + ')';
+    }
+    window.addEventListener('resize', fit);
+    window.addEventListener('orientationchange', fit);
+    if (document.fonts && document.fonts.ready) { document.fonts.ready.then(fit); }
+    fit();
+  })();
+</script>
+</body>
+</html>
