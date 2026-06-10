@@ -49,6 +49,7 @@
     border:1.5px solid #262626;
     border-radius:54px;
     transform-origin:center center;
+    overflow:hidden;
   }
 
   /* The screen — fixed mobile viewport; the page scrolls inside it. */
@@ -82,6 +83,29 @@
   #screen.show-stock{ overflow:hidden; }
   #screen.show-stock #frame{ display:none; }
   #screen.show-stock #stockFrame{ display:block; }
+
+  /* Bottom-sheet info modal (contained inside the phone screen) */
+  .sheet-backdrop{ position:absolute; top:14px; left:14px; right:14px; bottom:14px; border-radius:40px; background:rgba(0,0,0,0.55); opacity:0; pointer-events:none; transition:opacity 240ms ease; z-index:20; }
+  .sheet-backdrop.open{ opacity:1; pointer-events:auto; }
+  .info-sheet{ position:absolute; left:14px; right:14px; bottom:14px; max-height:680px; display:flex; flex-direction:column; overflow:hidden; background:#0a0a0a; border-top:1px solid var(--divider); border-radius:18px 18px 40px 40px; transform:translateY(120%); transition:transform 280ms cubic-bezier(0.22,0.61,0.36,1); z-index:21; }
+  .info-sheet.open{ transform:translateY(0); }
+  .sheet-grab{ width:36px; height:4px; border-radius:2px; background:#2a2a2a; margin:10px auto 0; flex:0 0 auto; }
+  .sheet-close{ position:absolute; top:12px; right:14px; width:28px; height:28px; display:flex; align-items:center; justify-content:center; background:none; border:none; color:var(--silver); font-size:20px; line-height:1; cursor:pointer; padding:0; }
+  .sheet-close:active{ opacity:.5; }
+  .sheet-content{ overflow-y:auto; padding:22px 20px 30px; scrollbar-width:none; -ms-overflow-style:none; }
+  .sheet-content::-webkit-scrollbar{ display:none; }
+  .sheet-title{ font-size:18px; letter-spacing:-0.36px; color:var(--white); margin-bottom:8px; }
+  .sheet-lead{ font-size:13px; line-height:1.6; color:#929292; letter-spacing:-0.22px; }
+  .sheet-sec-label{ font-size:11px; letter-spacing:0.05em; text-transform:uppercase; color:#565b5e; margin:26px 0 10px; }
+  .col-note{ display:flex; justify-content:space-between; gap:14px; padding:9px 0; border-top:1px solid var(--divider); }
+  .col-note .k{ font-size:13px; color:var(--silver); letter-spacing:-0.26px; white-space:nowrap; }
+  .col-note .v{ font-size:12px; color:#929292; letter-spacing:-0.22px; text-align:right; line-height:1.4; }
+  .legend-row{ display:flex; align-items:flex-start; gap:11px; padding:11px 0; border-top:1px solid var(--divider); }
+  .legend-dot{ width:7px; height:7px; border-radius:50%; flex:0 0 auto; margin-top:5px; }
+  .legend-dot.red{ background:#fd0200; } .legend-dot.amber{ background:#fdad00; } .legend-dot.white{ background:#fff; } .legend-dot.gray{ background:#929292; }
+  .legend-name{ font-size:13px; color:var(--silver); letter-spacing:-0.26px; }
+  .legend-desc{ font-size:12px; color:#929292; line-height:1.5; letter-spacing:-0.22px; margin-top:2px; }
+  .legend-eg{ font-size:11px; color:#565b5e; letter-spacing:-0.22px; margin-top:3px; }
 
   /* ---------- Header ---------- */
   .header{ position:absolute; left:0; top:0; width:393px; height:71px; }
@@ -155,9 +179,13 @@
   .tbl-row .pct{ color:var(--silver); font-size:13px; letter-spacing:-0.26px; line-height:normal; }
   .view-all{ font-size:13px; letter-spacing:-0.26px; color:var(--silver); line-height:normal; text-align:right; width:100%; }
 
-  /* open orders */
-  .open-orders{ display:flex; align-items:center; justify-content:flex-end; gap:9.99px; width:100%; }
-  .open-orders .lbl,.open-orders .n{ font-size:15px; letter-spacing:-0.3px; color:var(--silver); line-height:17.25px; }
+  /* open orders — now sits left of the Active Positions header, grayed back */
+  .open-orders{ display:flex; align-items:baseline; gap:6px; }
+  .open-orders .lbl,.open-orders .n{ font-size:15px; letter-spacing:-0.3px; color:#929292; line-height:17.25px; }
+
+  /* Active Positions header row: Open Orders (left) · Active Positions (right) */
+  .ap-head-row{ display:flex; align-items:baseline; justify-content:space-between; width:100%; gap:12px; }
+  #activePosHead{ color:var(--white); cursor:pointer; }
 
   /* ---------- Holdings rows (rich Active Positions) ---------- */
   .holdings{ display:flex; flex-direction:column; width:100%; }
@@ -195,6 +223,7 @@
   .badge.notable{ background:rgba(255,255,255,0.10); color:var(--white); }
   /* Tier 4 — ambient context. Same chip as notable, but gray text recedes. */
   .badge.ambient{ background:rgba(255,255,255,0.10); color:#929292; }
+
 
   .h-right{ display:flex; flex-direction:column; align-items:flex-end; gap:6px; text-align:right; }
   .h-line{ display:flex; align-items:baseline; justify-content:flex-end; gap:10px; white-space:nowrap; }
@@ -310,7 +339,10 @@
 
           <!-- Active Positions -->
           <div class="pos-group" style="margin-top:30px;">
-            <div class="pos-head">Active Positions<span class="n">9</span></div>
+            <div class="ap-head-row">
+              <div class="open-orders"><span class="lbl">Open Orders</span><span class="n">2</span></div>
+              <div class="pos-head" id="activePosHead">Active Positions<span class="n">9</span></div>
+            </div>
             <div class="holdings">
 
               <a class="holding" id="aaplLink" href="#">
@@ -417,21 +449,57 @@
             <div class="view-all">View All</div>
           </div>
 
-          <!-- Under Review -->
+          <!-- Under Review (watchlist — not owned: no P/L, stock-only badges) -->
           <div class="pos-group">
             <div class="pos-head">Under Review<span class="n">5</span></div>
-            <div class="tbl">
-              <div class="tbl-row"><div class="ticker">ORIO.TO</div></div>
-              <div class="tbl-row"><div class="ticker">BWEN</div></div>
-              <div class="tbl-row"><div class="ticker">EOSCR</div></div>
+            <div class="holdings watchlist">
+
+              <div class="holding">
+                <div class="holding-top">
+                  <div class="h-name">
+                    <div class="h-ticker">SHOP.TO</div>
+                  </div>
+                  <div class="h-right">
+                    <div class="h-line today"><span class="amt">142.30 CAD</span><span class="chg">+1.4%</span></div>
+                  </div>
+                </div>
+                <div class="h-badges">
+                  <span class="badge soon">Earnings</span>
+                  <span class="badge ambient">52 Week High</span>
+                </div>
+              </div>
+
+              <div class="holding">
+                <div class="holding-top">
+                  <div class="h-name">
+                    <div class="h-ticker">PLTR</div>
+                  </div>
+                  <div class="h-right">
+                    <div class="h-line today"><span class="amt">41.80 USD</span><span class="chg">+2.2%</span></div>
+                  </div>
+                </div>
+                <div class="h-badges">
+                  <span class="badge ambient">Top Mover</span>
+                </div>
+              </div>
+
+              <div class="holding">
+                <div class="holding-top">
+                  <div class="h-name">
+                    <div class="h-ticker">SAVA</div>
+                  </div>
+                  <div class="h-right">
+                    <div class="h-line today"><span class="amt">26.10 USD</span><span class="chg">-8.4%</span></div>
+                  </div>
+                </div>
+                <div class="h-badges">
+                  <span class="badge critical">Stock Halted</span>
+                  <span class="badge ambient">Top Mover</span>
+                </div>
+              </div>
+
             </div>
             <div class="view-all">View All</div>
-          </div>
-
-          <!-- Open Orders -->
-          <div class="open-orders">
-            <div class="lbl">Open Orders</div>
-            <div class="n">2</div>
           </div>
 
         </div>
@@ -442,6 +510,28 @@
 
       <iframe id="stockFrame" title="Apple Inc · AAPL"></iframe>
     </div>
+
+    <div class="sheet-backdrop" id="sheetBackdrop"></div>
+      <aside class="info-sheet" id="infoSheet" role="dialog" aria-label="About Active Positions">
+        <div class="sheet-grab"></div>
+        <button class="sheet-close" id="sheetClose" aria-label="Close">&times;</button>
+        <div class="sheet-content">
+          <div class="sheet-title">Active Positions</div>
+          <p class="sheet-lead">Your self-directed holdings. Each row carries its weight, your classification, value and return, and any flags that require attention.</p>
+
+          <div class="sheet-sec-label">The row</div>
+          <div class="col-note"><span class="k">25% WT</span><span class="v">Share of active capital</span></div>
+          <div class="col-note"><span class="k">Compounder / Spec</span><span class="v">Your classification of the position</span></div>
+          <div class="col-note"><span class="k">12,500.00 CAD · +38.2%</span><span class="v">Overall value and total return</span></div>
+          <div class="col-note"><span class="k">232.40 USD · +1.1%</span><span class="v">Last price and today's change</span></div>
+
+          <div class="sheet-sec-label">Flags</div>
+          <div class="legend-row"><span class="legend-dot red"></span><div><div class="legend-name">Red — Capital at risk</div><div class="legend-desc">The position is untradeable, or your thesis has broken. Read this first.</div><div class="legend-eg">Stock Halted · Delisted · Margin Call · Thesis Breach</div></div></div>
+          <div class="legend-row"><span class="legend-dot amber"></span><div><div class="legend-name">Amber — A decision is pending</div><div class="legend-desc">A clock is running. Worth a look, not alarm.</div><div class="legend-eg">Earnings · Open Order · Review Due</div></div></div>
+          <div class="legend-row"><span class="legend-dot white"></span><div><div class="legend-name">White — Notable</div><div class="legend-desc">Worth knowing. No action required.</div><div class="legend-eg">Reverse Split · Merger · Overweight</div></div></div>
+          <div class="legend-row"><span class="legend-dot gray"></span><div><div class="legend-name">Gray — Context</div><div class="legend-desc">Background detail. Present, but recedes.</div><div class="legend-eg">Stock Split · Top Mover · 52 Week High · Order Complete</div></div></div>
+        </div>
+      </aside>
   </div>
 </div>
 
@@ -477,6 +567,10 @@
     notable:  'background:rgba(255,255,255,0.10);color:#fff',
     ambient:  'background:rgba(255,255,255,0.10);color:#929292'
   };
+  // Severity order, left→right: red, amber, white, gray.
+  var TIER_RANK = { critical:0, soon:1, notable:2, ambient:3 };
+  function rankT(t){ return (t in TIER_RANK) ? TIER_RANK[t] : 99; }
+  function rankEl(el){ if(el.classList.contains('critical'))return 0; if(el.classList.contains('soon'))return 1; if(el.classList.contains('notable'))return 2; if(el.classList.contains('ambient'))return 3; return 99; }
   var POSITIONS = {
     'AAPL':    { name:'Apple Inc',              price:'232.40 USD', entry:'+38.2%', badges:[['Earnings','soon'],['52 Week High','ambient']] },
     'ORIO.TO': { name:'Orion Digital',          price:'87.60 CAD',  entry:'+42.6%', badges:[['52 Week High','ambient'],['Earnings','soon'],['Stock Split','ambient'],['Reverse Split','notable']] },
@@ -495,11 +589,17 @@
     if (sec) sec.innerHTML = 'Last Price <span class="price">' + p.price + '</span> <span class="t-entry">' + p.entry + ' vs entry</span>';
     var tb = d.querySelector('.title-block');
     if (tb) {
+      if (!d.getElementById('dashBadgeAnim')) {
+        var st = d.createElement('style'); st.id = 'dashBadgeAnim';
+        st.textContent = '@keyframes dashBadgePulse{0%,100%{opacity:1}50%{opacity:.4}}.dash-pulse{animation:dashBadgePulse 1.1s ease-in-out 2 both}@media(prefers-reduced-motion:reduce){.dash-pulse{animation:none}}';
+        (d.head || d.documentElement).appendChild(st);
+      }
       var row = d.getElementById('dashBadges');
       if (!row) { row = d.createElement('div'); row.id = 'dashBadges'; tb.parentNode.insertBefore(row, tb.nextSibling); }
       row.setAttribute('style', 'display:flex;flex-wrap:wrap;gap:6px;justify-content:flex-end;padding:14px 20px 0;');
-      row.innerHTML = p.badges.map(function (b) {
-        return '<span style="font-family:Inter,sans-serif;font-size:9px;font-weight:500;line-height:1.3;letter-spacing:0;padding:5px 6px;border-radius:3px;white-space:nowrap;' + BADGE_STYLE[b[1]] + '">' + b[0] + '</span>';
+      row.innerHTML = p.badges.slice().sort(function (a, b) { return rankT(a[1]) - rankT(b[1]); }).map(function (b) {
+        var pulse = (b[1] === 'critical' || b[1] === 'soon') ? ' class="dash-pulse"' : '';
+        return '<span' + pulse + ' style="font-family:Inter,sans-serif;font-size:9px;font-weight:500;line-height:1.3;letter-spacing:0;padding:5px 6px;border-radius:3px;white-space:nowrap;' + BADGE_STYLE[b[1]] + '">' + b[0] + '</span>';
       }).join('');
       row.style.display = p.badges.length ? 'flex' : 'none';
     }
@@ -535,18 +635,38 @@
     } catch (e) {}
   });
 
-  // Make every position open its stock page.
-  [].slice.call(document.querySelectorAll('.holding')).forEach(function (h) {
-    var tk = h.querySelector('.h-ticker');
-    var t = tk && tk.childNodes[0] ? (tk.childNodes[0].textContent || '').trim() : '';
-    if (t) { h.setAttribute('data-ticker', t); h.style.cursor = 'pointer'; }
+  // Order each row's badges left→right by severity: red, amber, white, gray.
+  [].slice.call(document.querySelectorAll('.h-badges')).forEach(function (box) {
+    [].slice.call(box.querySelectorAll('.badge'))
+      .sort(function (a, b) { return rankEl(a) - rankEl(b); })
+      .forEach(function (s) { box.appendChild(s); });
   });
-  var holdings = document.querySelector('.holdings');
-  if (holdings) holdings.addEventListener('click', function (e) {
-    var h = e.target.closest('.holding'); if (!h) return;
-    var t = h.getAttribute('data-ticker'); if (!t) return;
-    e.preventDefault(); showStock(t);
-  });
+
+  // Make every owned position open its stock page (watchlist rows are display-only).
+  var activeHoldings = document.querySelector('.holdings:not(.watchlist)');
+  if (activeHoldings) {
+    [].slice.call(activeHoldings.querySelectorAll('.holding')).forEach(function (h) {
+      var tk = h.querySelector('.h-ticker');
+      var t = tk && tk.childNodes[0] ? (tk.childNodes[0].textContent || '').trim() : '';
+      if (t) { h.setAttribute('data-ticker', t); h.style.cursor = 'pointer'; }
+    });
+    activeHoldings.addEventListener('click', function (e) {
+      var h = e.target.closest('.holding'); if (!h) return;
+      var t = h.getAttribute('data-ticker'); if (!t) return;
+      e.preventDefault(); showStock(t);
+    });
+  }
+
+  // Active Positions header → bottom-sheet explainer.
+  var infoSheet = document.getElementById('infoSheet');
+  var sheetBackdrop = document.getElementById('sheetBackdrop');
+  function openSheet() { sheetBackdrop.classList.add('open'); infoSheet.classList.add('open'); infoSheet.style.transform = 'translateY(0)'; }
+  function closeSheet() { sheetBackdrop.classList.remove('open'); infoSheet.classList.remove('open'); infoSheet.style.transform = ''; }
+  var apHead = document.getElementById('activePosHead');
+  if (apHead) apHead.addEventListener('click', openSheet);
+  var sheetClose = document.getElementById('sheetClose');
+  if (sheetClose) sheetClose.addEventListener('click', closeSheet);
+  if (sheetBackdrop) sheetBackdrop.addEventListener('click', closeSheet);
 
   fit();
 </script>
