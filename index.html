@@ -185,8 +185,11 @@
 
   /* Section collapse (accordion) */
   .sec-head-right{ display:flex; align-items:center; gap:10px; }
-  .sec-chevron{ background:none; border:none; padding:4px; margin:-4px -2px -4px 0; cursor:pointer; color:#929292; display:inline-flex; align-items:center; -webkit-tap-highlight-color:transparent; transition:transform 180ms ease; }
+  .sec-chevron{ background:none; border:none; padding:4px; margin:-4px 0 -4px -2px; cursor:pointer; color:#929292; display:inline-flex; align-items:center; -webkit-tap-highlight-color:transparent; transition:transform 180ms ease; }
   .sec-chevron svg{ display:block; width:11px; height:7px; }
+  /* ↗ — trailing "tap to open" indicator (system convention) */
+  .open-ind{ display:inline-flex; align-items:center; margin-left:7px; vertical-align:middle; }
+  .open-ind svg{ display:block; width:13px; height:13px; }
   .pos-group.collapsed .sec-chevron{ transform:rotate(-90deg); }
   .pos-group.collapsed .holdings,
   .pos-group.collapsed .more-toggle,
@@ -366,8 +369,8 @@
             <div class="ap-head-row">
               <div class="open-orders"><span class="lbl">Open Orders</span><span class="n">2</span></div>
               <div class="sec-head-right">
-                <div class="pos-head" id="activePosHead">Active Positions<span class="n">20</span></div>
                 <button class="sec-chevron" aria-label="Collapse section"><svg viewBox="0 0 11 7" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M1 1.5L5.5 6L10 1.5" stroke="currentColor" stroke-width="1.2"/></svg></button>
+                <div class="pos-head" id="activePosHead">Active Positions<span class="n">20</span><span class="open-ind" aria-hidden="true"><svg viewBox="0 0 13 13" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M3 10L10 3M4.5 3H10V8.5" stroke="currentColor" stroke-width="1.2" stroke-linecap="square" stroke-linejoin="miter"/></svg></span></div>
               </div>
             </div>
             <div class="holdings">
@@ -664,8 +667,8 @@
           <!-- Under Review (watchlist — not owned: no P/L, stock-only badges) -->
           <div class="pos-group">
             <div class="sec-head-right">
-              <div class="pos-head">Under Review<span class="n">5</span></div>
               <button class="sec-chevron" aria-label="Collapse section"><svg viewBox="0 0 11 7" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M1 1.5L5.5 6L10 1.5" stroke="currentColor" stroke-width="1.2"/></svg></button>
+              <div class="pos-head">Under Review<span class="n">5</span></div>
             </div>
             <div class="holdings watchlist">
 
