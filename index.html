@@ -252,6 +252,9 @@
   .h-line .chg{ color:#929292; font-size:13px; letter-spacing:-0.26px; min-width:50px; text-align:right; }
   .h-line.overall .amt{ font-size:13px; }
   .h-line.today .amt{ font-size:13px; }
+
+  /* One-line note preview (watchlist) — truncates with … if it would wrap */
+  .h-note{ font-size:13px; color:#929292; letter-spacing:-0.22px; line-height:1.5; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; max-width:100%; }
 </style>
 </head>
 <body>
@@ -363,7 +366,7 @@
             <div class="ap-head-row">
               <div class="open-orders"><span class="lbl">Open Orders</span><span class="n">2</span></div>
               <div class="sec-head-right">
-                <div class="pos-head" id="activePosHead">Active Positions<span class="n">10</span></div>
+                <div class="pos-head" id="activePosHead">Active Positions<span class="n">20</span></div>
                 <button class="sec-chevron" aria-label="Collapse section"><svg viewBox="0 0 11 7" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M1 1.5L5.5 6L10 1.5" stroke="currentColor" stroke-width="1.2"/></svg></button>
               </div>
             </div>
@@ -521,6 +524,139 @@
                 </div>
               </div>
 
+              <div class="holding">
+                <div class="holding-top">
+                  <div class="h-name">
+                    <div class="h-ticker">TSM<span class="h-wt">4% WT</span></div>
+                    <div class="h-cat">Emerging Compounder</div>
+                  </div>
+                  <div class="h-right">
+                    <div class="h-line overall"><span class="amt">4,200.00 CAD</span><span class="chg">+41.3%</span></div>
+                    <div class="h-line today"><span class="amt">198.60 USD</span><span class="chg">+1.0%</span></div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="holding">
+                <div class="holding-top">
+                  <div class="h-name">
+                    <div class="h-ticker">BRK.B<span class="h-wt">3% WT</span></div>
+                    <div class="h-cat">Compounder</div>
+                  </div>
+                  <div class="h-right">
+                    <div class="h-line overall"><span class="amt">3,900.00 CAD</span><span class="chg">+11.5%</span></div>
+                    <div class="h-line today"><span class="amt">472.30 USD</span><span class="chg">+0.1%</span></div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="holding">
+                <div class="holding-top">
+                  <div class="h-name">
+                    <div class="h-ticker">UNH<span class="h-wt">3% WT</span></div>
+                    <div class="h-cat">Compounder</div>
+                  </div>
+                  <div class="h-right">
+                    <div class="h-line overall"><span class="amt">3,600.00 CAD</span><span class="chg">+8.4%</span></div>
+                    <div class="h-line today"><span class="amt">528.10 USD</span><span class="chg">-0.5%</span></div>
+                  </div>
+                </div>
+                <div class="h-badges"><span class="badge soon">Earnings</span></div>
+              </div>
+
+              <div class="holding">
+                <div class="holding-top">
+                  <div class="h-name">
+                    <div class="h-ticker">HD<span class="h-wt">2% WT</span></div>
+                    <div class="h-cat">Compounder</div>
+                  </div>
+                  <div class="h-right">
+                    <div class="h-line overall"><span class="amt">3,100.00 CAD</span><span class="chg">+13.2%</span></div>
+                    <div class="h-line today"><span class="amt">412.70 USD</span><span class="chg">+0.2%</span></div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="holding">
+                <div class="holding-top">
+                  <div class="h-name">
+                    <div class="h-ticker">LLY<span class="h-wt">2% WT</span></div>
+                    <div class="h-cat">Compounder</div>
+                  </div>
+                  <div class="h-right">
+                    <div class="h-line overall"><span class="amt">2,800.00 CAD</span><span class="chg">+33.6%</span></div>
+                    <div class="h-line today"><span class="amt">902.40 USD</span><span class="chg">+0.7%</span></div>
+                  </div>
+                </div>
+                <div class="h-badges"><span class="badge ambient">52 Week High</span></div>
+              </div>
+
+              <div class="holding">
+                <div class="holding-top">
+                  <div class="h-name">
+                    <div class="h-ticker">ASML<span class="h-wt">2% WT</span></div>
+                    <div class="h-cat">Emerging Compounder</div>
+                  </div>
+                  <div class="h-right">
+                    <div class="h-line overall"><span class="amt">2,500.00 CAD</span><span class="chg">+29.1%</span></div>
+                    <div class="h-line today"><span class="amt">712.40 USD</span><span class="chg">+0.9%</span></div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="holding">
+                <div class="holding-top">
+                  <div class="h-name">
+                    <div class="h-ticker">ADBE<span class="h-wt">1% WT</span></div>
+                    <div class="h-cat">Compounder</div>
+                  </div>
+                  <div class="h-right">
+                    <div class="h-line overall"><span class="amt">1,900.00 CAD</span><span class="chg">+6.8%</span></div>
+                    <div class="h-line today"><span class="amt">548.20 USD</span><span class="chg">-0.3%</span></div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="holding">
+                <div class="holding-top">
+                  <div class="h-name">
+                    <div class="h-ticker">NFLX<span class="h-wt">1% WT</span></div>
+                    <div class="h-cat">Compounder</div>
+                  </div>
+                  <div class="h-right">
+                    <div class="h-line overall"><span class="amt">1,700.00 CAD</span><span class="chg">+24.5%</span></div>
+                    <div class="h-line today"><span class="amt">712.80 USD</span><span class="chg">+0.6%</span></div>
+                  </div>
+                </div>
+                <div class="h-badges"><span class="badge soon">Earnings</span></div>
+              </div>
+
+              <div class="holding">
+                <div class="holding-top">
+                  <div class="h-name">
+                    <div class="h-ticker">CRM<span class="h-wt">1% WT</span></div>
+                    <div class="h-cat">Compounder</div>
+                  </div>
+                  <div class="h-right">
+                    <div class="h-line overall"><span class="amt">1,500.00 CAD</span><span class="chg">+9.7%</span></div>
+                    <div class="h-line today"><span class="amt">328.40 USD</span><span class="chg">-0.1%</span></div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="holding">
+                <div class="holding-top">
+                  <div class="h-name">
+                    <div class="h-ticker">ABNB<span class="h-wt">1% WT</span></div>
+                    <div class="h-cat">Speculative</div>
+                  </div>
+                  <div class="h-right">
+                    <div class="h-line overall"><span class="amt">1,200.00 CAD</span><span class="chg">-4.2%</span></div>
+                    <div class="h-line today"><span class="amt">132.60 USD</span><span class="chg">-1.4%</span></div>
+                  </div>
+                </div>
+              </div>
+
             </div>
             <div class="more-toggle" id="apMore"></div>
           </div>
@@ -542,6 +678,7 @@
                     <div class="h-line today"><span class="amt">142.30 CAD</span><span class="chg">+1.4%</span></div>
                   </div>
                 </div>
+                <div class="h-note">Watching for re-acceleration in merchant solutions; revisit after the next print.</div>
                 <div class="h-badges">
                   <span class="badge soon">Earnings</span>
                   <span class="badge ambient">52 Week High</span>
@@ -557,6 +694,7 @@
                     <div class="h-line today"><span class="amt">41.80 USD</span><span class="chg">+2.2%</span></div>
                   </div>
                 </div>
+                <div class="h-note">Valuation rich — wait for a pullback toward the low 30s before initiating.</div>
                 <div class="h-badges">
                   <span class="badge ambient">Top Mover</span>
                 </div>
@@ -571,14 +709,44 @@
                     <div class="h-line today"><span class="amt">26.10 USD</span><span class="chg">-8.4%</span></div>
                   </div>
                 </div>
+                <div class="h-note">Binary on trial data; currently halted. No action until it reopens and the facts are clear.</div>
                 <div class="h-badges">
                   <span class="badge critical">Stock Halted</span>
                   <span class="badge ambient">Top Mover</span>
                 </div>
               </div>
 
+              <div class="holding">
+                <div class="holding-top">
+                  <div class="h-name">
+                    <div class="h-ticker">CRWD</div>
+                  </div>
+                  <div class="h-right">
+                    <div class="h-line today"><span class="amt">412.50 USD</span><span class="chg">+1.9%</span></div>
+                  </div>
+                </div>
+                <div class="h-note">Strong execution; entry only on a reset after the post-earnings move.</div>
+                <div class="h-badges">
+                  <span class="badge soon">Earnings</span>
+                </div>
+              </div>
+
+              <div class="holding">
+                <div class="holding-top">
+                  <div class="h-name">
+                    <div class="h-ticker">RIVN</div>
+                  </div>
+                  <div class="h-right">
+                    <div class="h-line today"><span class="amt">13.20 USD</span><span class="chg">-3.6%</span></div>
+                  </div>
+                </div>
+                <div class="h-note">Cash burn the key risk — track gross-margin trajectory before any starter position.</div>
+                <div class="h-badges">
+                  <span class="badge ambient">52 Week Low</span>
+                </div>
+              </div>
+
             </div>
-            <div class="view-all">View All</div>
           </div>
 
         </div>
@@ -660,7 +828,17 @@
     'MSFT':    { name:'Microsoft', price:'478.20 USD', entry:'+28.4%', badges:[] },
     'GOOGL':   { name:'Alphabet',  price:'188.40 USD', entry:'+19.2%', badges:[] },
     'COST':    { name:'Costco',    price:'905.10 USD', entry:'+22.7%', badges:[] },
-    'V':       { name:'Visa',      price:'312.80 USD', entry:'+14.9%', badges:[] }
+    'V':       { name:'Visa',      price:'312.80 USD', entry:'+14.9%', badges:[] },
+    'TSM':     { name:'Taiwan Semiconductor', price:'198.60 USD', entry:'+41.3%', badges:[] },
+    'BRK.B':   { name:'Berkshire Hathaway',   price:'472.30 USD', entry:'+11.5%', badges:[] },
+    'UNH':     { name:'UnitedHealth', price:'528.10 USD', entry:'+8.4%',  badges:[['Earnings','soon']] },
+    'HD':      { name:'Home Depot',   price:'412.70 USD', entry:'+13.2%', badges:[] },
+    'LLY':     { name:'Eli Lilly',    price:'902.40 USD', entry:'+33.6%', badges:[['52 Week High','ambient']] },
+    'ASML':    { name:'ASML Holding', price:'712.40 USD', entry:'+29.1%', badges:[] },
+    'ADBE':    { name:'Adobe',        price:'548.20 USD', entry:'+6.8%',  badges:[] },
+    'NFLX':    { name:'Netflix',      price:'712.80 USD', entry:'+24.5%', badges:[['Earnings','soon']] },
+    'CRM':     { name:'Salesforce',   price:'328.40 USD', entry:'+9.7%',  badges:[] },
+    'ABNB':    { name:'Airbnb',       price:'132.60 USD', entry:'-4.2%',  badges:[] }
   };
   var currentTicker = 'AAPL';
 
@@ -759,25 +937,20 @@
     });
   });
 
-  // Triage — show flagged (red/amber) + top-weight positions; the calm rest
-  // are hidden and revealed in place via the "N more" toggle.
+  // Active Positions — order by weight (desc); show up to 20, rest behind a toggle.
   (function () {
     var box = document.querySelector('.holdings:not(.watchlist)'); if (!box) return;
+    var CAP = 20;
     var rows = [].slice.call(box.querySelectorAll('.holding'));
-    var weights = rows.map(function (h) { var w = h.querySelector('.h-wt'); var m = w && w.textContent.match(/(\d+)/); return m ? parseInt(m[1], 10) : 0; });
-    var sorted = weights.slice().sort(function (a, b) { return b - a; });
-    var threshold = sorted.length >= 4 ? sorted[3] : (sorted[sorted.length - 1] || 0);
-    rows.forEach(function (h, i) {
-      var flagged = !!h.querySelector('.badge.critical, .badge.soon');
-      if (!flagged && weights[i] < threshold) h.classList.add('is-quiet');
-    });
-    var quiet = box.querySelectorAll('.holding.is-quiet').length;
+    rows.forEach(function (h) { var w = h.querySelector('.h-wt'); var m = w && w.textContent.match(/(\d+(?:\.\d+)?)/); h._wt = m ? parseFloat(m[1]) : 0; });
+    rows.sort(function (a, b) { return b._wt - a._wt; });
+    rows.forEach(function (h) { box.appendChild(h); }); // reorder DOM by weight
+    var extra = rows.length - CAP;
+    rows.forEach(function (h, i) { if (i >= CAP) h.classList.add('is-quiet'); });
     var toggle = document.getElementById('apMore');
     if (toggle) {
-      if (quiet > 0) {
-        var setLabel = function () {
-          toggle.innerHTML = box.classList.contains('show-all') ? 'Show less' : (quiet + ' more <span class="mt-sub">· no flags</span>');
-        };
+      if (extra > 0) {
+        var setLabel = function () { toggle.innerHTML = box.classList.contains('show-all') ? 'Show less' : (extra + ' more'); };
         setLabel();
         toggle.addEventListener('click', function () { box.classList.toggle('show-all'); setLabel(); });
       } else { toggle.style.display = 'none'; }
