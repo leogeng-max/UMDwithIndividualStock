@@ -33,11 +33,40 @@
     position:fixed;
     inset:0;
     display:flex;
-    align-items:center;
-    justify-content:center;
+    flex-direction:row;
+    align-items:stretch;
     background:#000;
     overflow:hidden;
   }
+  /* Edge-case explorer side nav (outside the phone) */
+  #sidenav{ flex:0 0 230px; height:100%; overflow-y:auto; background:#0a0a0a; border-right:1px solid #1c1c1c; padding:16px 0 30px; font-family:'Inter',sans-serif; }
+  #sidenav .nav-title{ font-size:13px; color:#c7c7c7; letter-spacing:-0.26px; padding:6px 18px 12px; }
+  #sidenav h4{ font-size:10px; font-weight:500; letter-spacing:0.08em; text-transform:uppercase; color:#565b5e; padding:18px 18px 6px; }
+  .nav-item{ display:block; width:100%; text-align:left; background:none; border:0; border-left:2px solid transparent; color:#929292; font-family:inherit; font-size:13px; letter-spacing:-0.26px; padding:8px 18px; cursor:pointer; transition:background 120ms linear,color 120ms linear; }
+  .nav-item:hover{ background:#141414; color:#c7c7c7; }
+  .nav-item.active{ background:#161616; color:#fff; border-left-color:#929292; }
+  #deviceWrap{ flex:1; min-width:0; display:flex; align-items:center; justify-content:center; }
+  .empty-state{ width:100%; text-align:right; color:#565b5e; font-size:13px; letter-spacing:-0.22px; padding:6px 0; }
+  /* Loading skeleton — grayscale bars; sheen sweeps left→right + gentle width breathing */
+  .skel-row{ display:flex; justify-content:space-between; align-items:flex-start; gap:12px; width:100%; padding:20px 0; }
+  .skel-row:not(:first-child){ border-top:1px solid var(--divider); }
+  .skel-left{ display:flex; flex-direction:column; align-items:flex-start; gap:9px; }
+  .skel-right{ display:flex; flex-direction:column; align-items:flex-end; gap:6px; }
+  .skel{ height:11px; border-radius:3px; background-color:#1a1a1a; background-image:linear-gradient(90deg,rgba(255,255,255,0) 0%,rgba(255,255,255,0.07) 50%,rgba(255,255,255,0) 100%); background-size:180% 100%; background-repeat:no-repeat; background-position:-60% 0; transform-origin:left center; animation:skelSweep 1.5s linear infinite, skelGrow 2.2s ease-in-out infinite; animation-delay:var(--d,0s),var(--d,0s); }
+  .skel-right .skel{ transform-origin:right center; }
+  .skel-ticker{ width:92px; }
+  .skel-cat{ width:120px; height:9px; }
+  .skel-num{ width:116px; }
+  .skel-num2{ width:92px; }
+  @keyframes skelSweep{ 0%{background-position:-60% 0} 100%{background-position:160% 0} }
+  @keyframes skelGrow{ 0%,100%{transform:scaleX(.72)} 50%{transform:scaleX(1)} }
+  @media (prefers-reduced-motion:reduce){ .skel{ animation:none; transform:none; } }
+
+  /* Loading variant 2 — thin white lines drawing/retracting left→right */
+  .skel-line{ height:2px; border-radius:1px; background:rgba(255,255,255,0.85); transform-origin:left center; animation:lineDraw 2.8s cubic-bezier(0.45,0,0.55,1) infinite; animation-delay:var(--d,0s); }
+  .skel-right .skel-line{ transform-origin:right center; }
+  @keyframes lineDraw{ 0%{transform:scaleX(.22);opacity:.3} 50%{transform:scaleX(1);opacity:.95} 100%{transform:scaleX(.22);opacity:.3} }
+  @media (prefers-reduced-motion:reduce){ .skel-line{ animation:none; transform:none; } }
 
   /* Phone device — fixed mobile ratio (393 x 852 screen + bezel).
      Scaled uniformly by JS to ~95% of the viewport height. */
@@ -187,9 +216,9 @@
   .sec-head-right{ display:flex; align-items:center; gap:10px; }
   .sec-chevron{ background:none; border:none; padding:4px; margin:-4px 0 -4px -2px; cursor:pointer; color:#929292; display:inline-flex; align-items:center; -webkit-tap-highlight-color:transparent; transition:transform 180ms ease; }
   .sec-chevron svg{ display:block; width:11px; height:7px; }
-  /* ↗ — trailing "tap to open" indicator (system convention) */
-  .open-ind{ display:inline-flex; align-items:center; margin-left:7px; vertical-align:middle; }
-  .open-ind svg{ display:block; width:13px; height:13px; }
+  /* ↗ — trailing "tap to open" indicator: small, muted, raised to the top-right */
+  .open-ind{ display:inline-flex; align-items:flex-start; margin-left:5px; vertical-align:top; color:#929292; position:relative; top:-1px; }
+  .open-ind svg{ display:block; width:10px; height:10px; }
   .pos-group.collapsed .sec-chevron{ transform:rotate(-90deg); }
   .pos-group.collapsed .holdings,
   .pos-group.collapsed .more-toggle,
@@ -262,6 +291,27 @@
 </head>
 <body>
 <div id="stage">
+  <nav id="sidenav">
+    <div class="nav-title">Edge cases</div>
+    <h4>Default</h4>
+    <button class="nav-item" data-scenario="default">Default · 20 / 5</button>
+    <h4>Active Positions</h4>
+    <button class="nav-item" data-scenario="a-empty">Empty</button>
+    <button class="nav-item" data-scenario="a-single">1 position</button>
+    <button class="nav-item" data-scenario="a-few">Few · 3</button>
+    <button class="nav-item" data-scenario="a-many">Many · 24</button>
+    <button class="nav-item" data-scenario="a-flagged">All flagged</button>
+    <button class="nav-item" data-scenario="a-noflag">No flags</button>
+    <button class="nav-item" data-scenario="a-loading">Loading · blocks</button>
+    <button class="nav-item" data-scenario="a-loading2">Loading · lines</button>
+    <button class="nav-item" data-scenario="a-collapsed">Collapsed</button>
+    <h4>Under Review</h4>
+    <button class="nav-item" data-scenario="w-empty">Empty</button>
+    <button class="nav-item" data-scenario="w-single">1 item</button>
+    <h4>Other</h4>
+    <button class="nav-item" data-scenario="oo-zero">Open Orders · 0</button>
+  </nav>
+  <div id="deviceWrap">
   <div id="device">
     <div id="screen">
       <div id="frame">
@@ -783,6 +833,7 @@
         </div>
       </aside>
   </div>
+  </div>
 </div>
 
 <script>
@@ -802,8 +853,11 @@
       frame.style.height = (active.offsetTop + active.offsetHeight + 40) + 'px';
     }
     device.style.transform = 'none';
+    var wrap = document.getElementById('deviceWrap');
+    var availW = wrap ? wrap.clientWidth : window.innerWidth;
+    var availH = wrap ? wrap.clientHeight : window.innerHeight;
     var dw = device.offsetWidth, dh = device.offsetHeight;
-    var s = Math.min(0.95 * window.innerHeight / dh, 0.95 * window.innerWidth / dw);
+    var s = Math.min(0.95 * availH / dh, 0.95 * availW / dw);
     device.style.transform = 'scale(' + s + ')';
   }
   window.addEventListener('resize', fit);
@@ -899,27 +953,115 @@
     } catch (e) {}
   });
 
-  // Order each row's badges left→right by severity: red, amber, white, gray.
-  [].slice.call(document.querySelectorAll('.h-badges')).forEach(function (box) {
-    [].slice.call(box.querySelectorAll('.badge'))
-      .sort(function (a, b) { return rankEl(a) - rankEl(b); })
-      .forEach(function (s) { box.appendChild(s); });
-  });
+  // ── Section refs + snapshot of the default markup ───────────────────
+  var activeBox = document.querySelector('.holdings:not(.watchlist)');
+  var watchBox = document.querySelector('.holdings.watchlist');
+  var activeGroup = activeBox.closest('.pos-group');
+  var watchGroup = watchBox.closest('.pos-group');
+  var ACTIVE_SNAP = activeBox.innerHTML;
+  var WATCH_SNAP = watchBox.innerHTML;
 
-  // Make every owned position open its stock page (watchlist rows are display-only).
-  var activeHoldings = document.querySelector('.holdings:not(.watchlist)');
-  if (activeHoldings) {
-    [].slice.call(activeHoldings.querySelectorAll('.holding')).forEach(function (h) {
+  function sortBadges(scope) {
+    [].slice.call(scope.querySelectorAll('.h-badges')).forEach(function (b) {
+      [].slice.call(b.querySelectorAll('.badge')).sort(function (a, c) { return rankEl(a) - rankEl(c); }).forEach(function (s) { b.appendChild(s); });
+    });
+  }
+  function setActiveCount(n) { var el = activeGroup.querySelector('.pos-head .n'); if (el) el.textContent = n; }
+  function setWatchCount(n) { var el = watchGroup.querySelector('.pos-head .n'); if (el) el.textContent = n; }
+  function setOpenOrders(v) { var el = document.querySelector('.open-orders .n'); if (el) el.textContent = v; }
+  function hideMore() { var t = document.getElementById('apMore'); if (t) { t.style.display = 'none'; t.onclick = null; } }
+
+  // Sort active rows by weight, cap at 20, wire taps + the "N more" toggle.
+  function wireActiveList() {
+    var rows = [].slice.call(activeBox.querySelectorAll('.holding'));
+    rows.forEach(function (h) {
       var tk = h.querySelector('.h-ticker');
       var t = tk && tk.childNodes[0] ? (tk.childNodes[0].textContent || '').trim() : '';
       if (t) { h.setAttribute('data-ticker', t); h.style.cursor = 'pointer'; }
+      var w = h.querySelector('.h-wt'); var m = w && w.textContent.match(/(\d+(?:\.\d+)?)/); h._wt = m ? parseFloat(m[1]) : 0;
     });
-    activeHoldings.addEventListener('click', function (e) {
-      var h = e.target.closest('.holding'); if (!h) return;
-      var t = h.getAttribute('data-ticker'); if (!t) return;
-      e.preventDefault(); showStock(t);
-    });
+    rows.sort(function (a, b) { return b._wt - a._wt; });
+    rows.forEach(function (h) { activeBox.appendChild(h); h.classList.remove('is-quiet'); }); // show all, no cap
+    activeBox.classList.remove('show-all');
+    hideMore();
+    setActiveCount(rows.length);
   }
+
+  function baseline() {
+    activeBox.innerHTML = ACTIVE_SNAP; watchBox.innerHTML = WATCH_SNAP;
+    activeBox.classList.remove('loading');
+    activeGroup.classList.remove('collapsed'); watchGroup.classList.remove('collapsed');
+    setOpenOrders('2');
+    sortBadges(activeBox); sortBadges(watchBox);
+    wireActiveList();
+    setWatchCount(watchBox.querySelectorAll('.holding').length);
+  }
+
+  function genActiveRow(t, wt, cat, oVal, oChg, price, dChg) {
+    return '<div class="holding"><div class="holding-top"><div class="h-name"><div class="h-ticker">' + t + '<span class="h-wt">' + wt + '% WT</span></div><div class="h-cat">' + cat + '</div></div><div class="h-right"><div class="h-line overall"><span class="amt">' + oVal + '</span><span class="chg">' + oChg + '</span></div><div class="h-line today"><span class="amt">' + price + '</span><span class="chg">' + dChg + '</span></div></div></div></div>';
+  }
+  function appendExtra(n) {
+    var ex = [['PYPL',1,'Compounder','1,100.00 CAD','+5.1%','78.40 USD','+0.4%'],['INTC',1,'Situational Mispricing','980.00 CAD','-6.3%','34.20 USD','-1.1%'],['SQ',1,'Speculative','870.00 CAD','+12.8%','71.60 USD','+0.9%'],['MU',1,'Emerging Compounder','760.00 CAD','+18.5%','98.30 USD','+0.7%']];
+    for (var i = 0; i < n && i < ex.length; i++) activeBox.insertAdjacentHTML('beforeend', genActiveRow.apply(null, ex[i]));
+  }
+  function loadingRows(n) {
+    var s = '';
+    for (var i = 0; i < n; i++) {
+      var d = (i * 0.12).toFixed(2) + 's';
+      s += '<div class="skel-row" style="--d:' + d + '">'
+        + '<div class="skel-left"><div class="skel skel-ticker"></div><div class="skel skel-cat"></div></div>'
+        + '<div class="skel-right"><div class="skel skel-num"></div><div class="skel skel-num2"></div></div>'
+        + '</div>';
+    }
+    return s;
+  }
+  function loadingLineRows(n) {
+    var s = '';
+    for (var i = 0; i < n; i++) {
+      var d = (i * 0.18).toFixed(2) + 's';
+      s += '<div class="skel-row" style="--d:' + d + '">'
+        + '<div class="skel-left"><div class="skel-line" style="width:92px"></div><div class="skel-line" style="width:120px"></div></div>'
+        + '<div class="skel-right"><div class="skel-line" style="width:116px"></div><div class="skel-line" style="width:92px"></div></div>'
+        + '</div>';
+    }
+    return s;
+  }
+  function addFlagToAll() {
+    [].slice.call(activeBox.querySelectorAll('.holding')).forEach(function (h) {
+      if (!h.querySelector('.badge.critical, .badge.soon')) {
+        var bb = h.querySelector('.h-badges'); if (!bb) { bb = document.createElement('div'); bb.className = 'h-badges'; h.appendChild(bb); }
+        bb.insertAdjacentHTML('afterbegin', '<span class="badge soon">Earnings</span>');
+      }
+    });
+    sortBadges(activeBox);
+  }
+  function removeAllBadges() { [].slice.call(activeBox.querySelectorAll('.h-badges')).forEach(function (b) { b.remove(); }); }
+  function trimActive(n) { [].slice.call(activeBox.querySelectorAll('.holding')).forEach(function (h, i) { if (i >= n) h.remove(); }); setActiveCount(n); hideMore(); }
+  function trimWatch(n) { [].slice.call(watchBox.querySelectorAll('.holding')).forEach(function (h, i) { if (i >= n) h.remove(); }); setWatchCount(n); }
+
+  var SCENARIOS = {
+    'default':    function () { baseline(); },
+    'a-empty':    function () { baseline(); activeBox.innerHTML = '<div class="empty-state">No active positions</div>'; setActiveCount(0); hideMore(); },
+    'a-single':   function () { baseline(); trimActive(1); },
+    'a-few':      function () { baseline(); trimActive(3); },
+    'a-many':     function () { baseline(); appendExtra(4); wireActiveList(); },
+    'a-flagged':  function () { baseline(); addFlagToAll(); },
+    'a-noflag':   function () { baseline(); removeAllBadges(); },
+    'a-loading':  function () { baseline(); activeBox.innerHTML = loadingRows(5); activeBox.classList.add('loading'); setActiveCount('—'); hideMore(); },
+    'a-loading2': function () { baseline(); activeBox.innerHTML = loadingLineRows(5); activeBox.classList.add('loading'); setActiveCount('—'); hideMore(); },
+    'a-collapsed':function () { baseline(); activeGroup.classList.add('collapsed'); },
+    'w-empty':    function () { baseline(); watchBox.innerHTML = '<div class="empty-state">Nothing under review</div>'; setWatchCount(0); },
+    'w-single':   function () { baseline(); trimWatch(1); },
+    'oo-zero':    function () { baseline(); setOpenOrders('0'); }
+  };
+  function applyScenario(key) { (SCENARIOS[key] || SCENARIOS['default'])(); fit(); }
+
+  // Tap an owned position → its stock page (bound once; survives re-renders).
+  activeBox.addEventListener('click', function (e) {
+    var h = e.target.closest('.holding'); if (!h) return;
+    var t = h.getAttribute('data-ticker'); if (!t || !POSITIONS[t]) return;
+    e.preventDefault(); showStock(t);
+  });
 
   // Active Positions header → bottom-sheet explainer.
   var infoSheet = document.getElementById('infoSheet');
@@ -940,27 +1082,17 @@
     });
   });
 
-  // Active Positions — order by weight (desc); show up to 20, rest behind a toggle.
-  (function () {
-    var box = document.querySelector('.holdings:not(.watchlist)'); if (!box) return;
-    var CAP = 20;
-    var rows = [].slice.call(box.querySelectorAll('.holding'));
-    rows.forEach(function (h) { var w = h.querySelector('.h-wt'); var m = w && w.textContent.match(/(\d+(?:\.\d+)?)/); h._wt = m ? parseFloat(m[1]) : 0; });
-    rows.sort(function (a, b) { return b._wt - a._wt; });
-    rows.forEach(function (h) { box.appendChild(h); }); // reorder DOM by weight
-    var extra = rows.length - CAP;
-    rows.forEach(function (h, i) { if (i >= CAP) h.classList.add('is-quiet'); });
-    var toggle = document.getElementById('apMore');
-    if (toggle) {
-      if (extra > 0) {
-        var setLabel = function () { toggle.innerHTML = box.classList.contains('show-all') ? 'Show less' : (extra + ' more'); };
-        setLabel();
-        toggle.addEventListener('click', function () { box.classList.toggle('show-all'); setLabel(); });
-      } else { toggle.style.display = 'none'; }
-    }
-  })();
+  // Side-nav — switch edge-case scenarios.
+  [].slice.call(document.querySelectorAll('.nav-item')).forEach(function (b) {
+    b.addEventListener('click', function () {
+      [].slice.call(document.querySelectorAll('.nav-item')).forEach(function (x) { x.classList.remove('active'); });
+      b.classList.add('active');
+      applyScenario(b.getAttribute('data-scenario'));
+    });
+  });
 
-  fit();
+  applyScenario('default');
+  var def = document.querySelector('.nav-item[data-scenario="default"]'); if (def) def.classList.add('active');
 </script>
 </body>
 </html>
