@@ -240,6 +240,27 @@
   .ap-head-row{ display:flex; align-items:baseline; justify-content:space-between; width:100%; gap:12px; }
   #activePosHead{ color:var(--white); cursor:pointer; }
 
+  /* S&P 500 Benchmark block */
+  .bench{ width:100%; }
+  .bench-head{ display:flex; justify-content:space-between; align-items:center; padding:16px 0; border-top:1px solid var(--divider); }
+  .bench-title{ font-size:15px; color:var(--silver); letter-spacing:-0.3px; }
+  .bench-sub{ color:#565b5e; }
+  .bench-chev{ color:#565b5e; display:inline-flex; align-items:center; }
+  .bench-chev svg{ width:6px; height:10px; display:block; }
+  .kv{ display:flex; justify-content:space-between; align-items:baseline; gap:12px; padding:7px 0; }
+  .kv .k{ font-size:13px; color:#929292; letter-spacing:-0.26px; }
+  .kv .v{ font-size:15px; color:var(--silver); letter-spacing:-0.3px; }
+  .kv-diff{ margin-top:9px; padding:16px 0; border-top:1px solid var(--divider); border-bottom:1px solid var(--divider); }
+  .kv-diff .v{ color:var(--white); }
+  .kv-diff .vsub{ color:#929292; font-size:13px; margin-left:8px; letter-spacing:-0.26px; }
+
+  /* Calibration block */
+  .calib{ width:100%; display:flex; flex-direction:column; align-items:flex-end; gap:7px; }
+  .calib-title{ font-size:15px; color:var(--silver); letter-spacing:-0.3px; margin-bottom:3px; }
+  .cal-row{ display:flex; align-items:baseline; justify-content:flex-end; gap:10px; }
+  .cal-row .cl{ font-size:13px; color:#929292; letter-spacing:-0.26px; }
+  .cal-row .cv{ font-size:13px; color:var(--silver); letter-spacing:-0.26px; }
+
   /* ---------- Holdings rows (rich Active Positions) ---------- */
   .holdings{ display:flex; flex-direction:column; width:100%; }
   .holding{
@@ -412,6 +433,25 @@
           <div class="data-block">
             <div class="t-label-26">Cash (10%)</div>
             <div class="t-15-silver">4,677.72</div>
+          </div>
+
+          <!-- S&P 500 Benchmark -->
+          <div class="bench">
+            <div class="bench-head">
+              <div class="bench-title">S&amp;P 500 Benchmark<span class="bench-sub"> · All Accounts</span></div>
+              <span class="bench-chev"><svg viewBox="0 0 6 10" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M1 1L5 5L1 9" stroke="currentColor" stroke-width="1.2"/></svg></span>
+            </div>
+            <div class="kv"><span class="k">Portfolio Value</span><span class="v">46,777.23</span></div>
+            <div class="kv"><span class="k">S&amp;P 500 Value</span><span class="v">44,593.05</span></div>
+            <div class="kv kv-diff"><span class="k">Difference</span><span class="v">+2,184.18<span class="vsub">+4.90%</span></span></div>
+          </div>
+
+          <!-- Calibration -->
+          <div class="calib">
+            <div class="calib-title">Calibration</div>
+            <div class="cal-row"><span class="cl">Accuracy</span><span class="cv">54%</span></div>
+            <div class="cal-row"><span class="cl">Predictions</span><span class="cv">17</span></div>
+            <div class="cal-row"><span class="cl">Next Judgment</span><span class="cv">Apr 1, 2027</span></div>
           </div>
 
           <!-- Active Positions -->
