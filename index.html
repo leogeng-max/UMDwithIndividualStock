@@ -1173,7 +1173,13 @@
   function openSheet() { sheetBackdrop.classList.add('open'); infoSheet.classList.add('open'); infoSheet.style.transform = 'translateY(0)'; }
   function closeSheet() { sheetBackdrop.classList.remove('open'); infoSheet.classList.remove('open'); infoSheet.style.transform = ''; }
   var apHead = document.getElementById('activePosHead');
-  if (apHead) apHead.addEventListener('click', openSheet);
+  if (apHead) apHead.addEventListener('click', function () {
+    if (frame.classList.contains('mvp1')) {
+      var g = apHead.closest('.pos-group'); if (g) g.classList.toggle('collapsed'); // MVP V1: tap = collapse/expand, no popup
+    } else {
+      openSheet();
+    }
+  });
   var sheetClose = document.getElementById('sheetClose');
   if (sheetClose) sheetClose.addEventListener('click', closeSheet);
   if (sheetBackdrop) sheetBackdrop.addEventListener('click', closeSheet);
