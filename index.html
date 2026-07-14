@@ -186,6 +186,14 @@
   .t-22{ font-size:22px; letter-spacing:-0.44px; color:var(--white); line-height:normal; }
   .t-13-silver{ font-size:13px; letter-spacing:-0.26px; color:var(--silver); line-height:normal; }
 
+  /* ---------- Market status (top-left clock) ---------- */
+  .market-status{ position:absolute; top:96px; left:13.5px; display:flex; align-items:center; gap:10px; line-height:1; }
+  .market-status .ms-time{ font-size:12px; color:var(--white); letter-spacing:-0.2px; font-feature-settings:'tnum' 1; }
+  .market-status .ms-sep{ font-size:12px; color:#565b5e; }
+  .market-status .ms-item{ display:inline-flex; align-items:center; gap:5px; font-size:10px; letter-spacing:0.03em; text-transform:uppercase; color:#929292; }
+  .market-status .ms-dot{ width:5px; height:5px; border-radius:50%; background:var(--white); flex:0 0 auto; }
+  .market-status.closed .ms-dot{ background:#565b5e; }
+
   /* ---------- Total Value ---------- */
   .total-value{
     position:absolute; left:0; top:141px; width:393px;
@@ -285,6 +293,12 @@
   #frame.mvp1 .open-ind{ display:none; }
   #frame.mvp1 .sec-head-right .pos-head{ order:1; }
   #frame.mvp1 .sec-head-right .sec-chevron{ order:2; margin:-4px -2px -4px 0; }
+  /* MVP V1: Core section collapse chevron (top-right) */
+  .core-chevron{ display:none; }
+  #frame.mvp1 .managed .core-chevron{ display:inline-flex; }
+  .section.managed.core-collapsed .core-secondary,
+  .section.managed.core-collapsed .tbl{ display:none; }
+  .section.managed.core-collapsed .core-chevron{ transform:rotate(-90deg); }
 
   /* ---------- Holdings rows (rich Active Positions) ---------- */
   .holdings{ display:flex; flex-direction:column; width:100%; }
@@ -359,6 +373,7 @@
     <button class="nav-item" data-scenario="w-single">1 item</button>
     <h4>Other</h4>
     <button class="nav-item" data-scenario="oo-zero">Open Orders · 0</button>
+    <button class="nav-item" data-scenario="markets-closed">Markets closed</button>
   </nav>
   <div id="deviceWrap">
   <div id="device">
@@ -384,6 +399,14 @@
       <div class="divider"></div>
     </div>
 
+    <!-- Market status -->
+    <div class="market-status">
+      <span class="ms-time">10:43 ET</span>
+      <span class="ms-sep">|</span>
+      <span class="ms-item"><span class="ms-dot"></span><span class="ms-lbl">US Open</span></span>
+      <span class="ms-item"><span class="ms-dot"></span><span class="ms-lbl">CA Open</span></span>
+    </div>
+
     <!-- Total Value -->
     <div class="total-value">
       <div class="t-label">Total Value</div>
@@ -394,9 +417,12 @@
     <div class="section managed pad">
       <div class="hr"></div>
       <div class="s-inner">
-        <div class="s-title-col">
-          <div class="t-title">Core</div>
-          <div class="t-sub">Managed</div>
+        <div class="s-title-row">
+          <div class="s-title-col">
+            <div class="t-title">Core</div>
+            <div class="t-sub">Managed</div>
+          </div>
+          <button class="sec-chevron core-chevron" aria-label="Collapse Core"><svg viewBox="0 0 11 7" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M1 1.5L5.5 6L10 1.5" stroke="currentColor" stroke-width="1.2"/></svg></button>
         </div>
         <div class="data-col" style="gap:50px;">
           <div class="data-block">
@@ -410,7 +436,7 @@
               </div>
             </div>
           </div>
-          <div class="data-block">
+          <div class="data-block core-secondary">
             <div class="t-label">Projection</div>
             <div class="t-15-silver">1.68M</div>
           </div>
@@ -922,9 +948,14 @@
   var screenEl = document.getElementById('screen');
   var stockFrame = document.getElementById('stockFrame');
   var active = document.querySelector('.section.active');
+  var managedSec = document.querySelector('.section.managed');
+  var M_TOP = managedSec.offsetTop, A_TOP = active.offsetTop;
+  var CORE_GAP = A_TOP - M_TOP - managedSec.offsetHeight; // standard gap below Core
+  function setActiveTop() { if (managedSec) active.style.top = (M_TOP + managedSec.offsetHeight + CORE_GAP) + 'px'; }
 
   // Scale the phone (fixed mobile ratio) to ~95% of the viewport, centered.
   function fit() {
+    setActiveTop();
     if (frame.offsetParent !== null) {
       frame.style.height = (active.offsetTop + active.offsetHeight + 40) + 'px';
     }
@@ -1046,6 +1077,14 @@
   function setWatchCount(n) { var el = watchGroup.querySelector('.pos-head .n'); if (el) el.textContent = n; }
   function setOpenOrders(v) { var el = document.querySelector('.open-orders .n'); if (el) el.textContent = v; }
   function hideMore() { var t = document.getElementById('apMore'); if (t) { t.style.display = 'none'; t.onclick = null; t.classList.remove('view-all-cta'); } }
+  function setMarkets(open) {
+    var ms = document.querySelector('.market-status'); if (!ms) return;
+    ms.classList.toggle('closed', !open);
+    var t = ms.querySelector('.ms-time'); if (t) t.textContent = open ? '10:43 ET' : '17:47 ET';
+    var l = ms.querySelectorAll('.ms-lbl');
+    if (l[0]) l[0].textContent = open ? 'US Open' : 'US Closed';
+    if (l[1]) l[1].textContent = open ? 'CA Open' : 'CA Closed';
+  }
 
   // Sort active rows by weight, cap at 20, wire taps + the "N more" toggle.
   function wireActiveList() {
@@ -1066,6 +1105,9 @@
   function baseline() {
     frame.classList.remove('mvp1');
     screenEl.classList.remove('show-all');
+    var mSec = document.querySelector('.section.managed'); if (mSec) mSec.classList.remove('core-collapsed');
+    active.style.top = '';
+    setMarkets(true);
     activeBox.innerHTML = ACTIVE_SNAP; watchBox.innerHTML = WATCH_SNAP;
     activeBox.classList.remove('loading');
     activeGroup.classList.remove('collapsed'); watchGroup.classList.remove('collapsed');
@@ -1156,7 +1198,8 @@
     'a-collapsed':function () { baseline(); activeGroup.classList.add('collapsed'); },
     'w-empty':    function () { baseline(); watchBox.innerHTML = '<div class="empty-state">Nothing under review</div>'; setWatchCount(0); },
     'w-single':   function () { baseline(); trimWatch(1); },
-    'oo-zero':    function () { baseline(); setOpenOrders('0'); }
+    'oo-zero':    function () { baseline(); setOpenOrders('0'); },
+    'markets-closed': function () { baseline(); setMarkets(false); }
   };
   function applyScenario(key) { (SCENARIOS[key] || SCENARIOS['default'])(); fit(); }
 
@@ -1188,13 +1231,18 @@
   var apBack = document.querySelector('#allPositions .ap-back');
   if (apBack) apBack.addEventListener('click', function () { screenEl.classList.remove('show-all'); });
 
-  // Accordion — chevron collapses/expands its section.
-  [].slice.call(document.querySelectorAll('.sec-chevron')).forEach(function (btn) {
+  // Accordion — chevron collapses/expands its pos-group section.
+  [].slice.call(document.querySelectorAll('.sec-chevron:not(.core-chevron)')).forEach(function (btn) {
     btn.addEventListener('click', function (e) {
       e.preventDefault(); e.stopPropagation();
       var g = btn.closest('.pos-group'); if (g) g.classList.toggle('collapsed');
     });
   });
+
+  // Core section (MVP V1) — collapse to just Core / Managed + Value; Active pulls up.
+  function toggleCore() { managedSec.classList.toggle('core-collapsed'); fit(); }
+  var coreChev = document.querySelector('.core-chevron');
+  if (coreChev) coreChev.addEventListener('click', function (e) { e.preventDefault(); e.stopPropagation(); toggleCore(); });
 
   // Side-nav — switch edge-case scenarios.
   [].slice.call(document.querySelectorAll('.nav-item')).forEach(function (b) {
