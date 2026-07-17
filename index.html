@@ -132,6 +132,89 @@
   .more-toggle.view-all-cta{ color:var(--silver); }
   .more-toggle .mt-arrow{ color:#565b5e; margin-left:5px; }
 
+  /* Performance detail page (S&P Benchmark drill-in) */
+  .bench{ cursor:pointer; }
+  #perfPage{ position:absolute; top:0; left:0; width:393px; height:100%; background:var(--black); display:none; flex-direction:column; overflow-y:auto; scrollbar-width:none; -ms-overflow-style:none; }
+  #perfPage::-webkit-scrollbar{ display:none; }
+  #screen.show-perf #frame, #screen.show-perf #stockFrame, #screen.show-perf #allPositions{ display:none; }
+  #screen.show-perf #perfPage{ display:flex; }
+  .perf-head{ display:flex; align-items:flex-start; justify-content:space-between; padding:22px 20px 0; }
+  .perf-title-col{ text-align:right; margin-top:58px; }
+  .perf-h1{ font-size:18px; color:var(--white); letter-spacing:-0.36px; line-height:1.15; }
+  .perf-h2{ font-size:15px; color:#565b5e; letter-spacing:-0.3px; margin-top:4px; }
+  .perf-body{ padding:0 20px 64px; }
+  .perf-track{ margin-top:44px; }
+  .perf-since{ font-size:13px; color:#929292; letter-spacing:-0.26px; }
+  .perf-dur{ font-size:28px; color:var(--white); letter-spacing:-0.56px; margin-top:8px; }
+  .perf-divider{ height:1px; background:var(--divider); margin:28px 0; }
+  .perf-annual{ font-size:13px; color:#929292; letter-spacing:-0.26px; margin-bottom:22px; }
+  .perf-stats{ display:flex; justify-content:space-between; gap:12px; }
+  .perf-stat{ display:flex; flex-direction:column; gap:8px; }
+  .perf-stat.center{ align-items:center; }
+  .perf-stat.right{ align-items:flex-end; }
+  .ps-lbl{ font-size:13px; color:#929292; letter-spacing:-0.26px; }
+  .ps-val{ font-size:22px; color:var(--white); letter-spacing:-0.44px; }
+  .not-yet{ margin-top:32px; border:1px solid var(--divider); background:#0e0e0e; padding:16px; }
+  .ny-title{ font-size:15px; color:var(--white); letter-spacing:-0.3px; margin-bottom:8px; }
+  .ny-desc{ font-size:13px; color:#929292; line-height:1.6; letter-spacing:-0.22px; }
+  .ny-foot{ display:flex; justify-content:space-between; margin-top:14px; padding-top:12px; border-top:1px solid var(--divider); }
+  .ny-foot span{ font-size:11px; color:var(--abbey); letter-spacing:-0.22px; font-feature-settings:'tnum' 1; }
+
+  /* ===== Performance report ===== */
+  .perf-exit{ font-size:13px; color:var(--gray); letter-spacing:-0.26px; background:none; border:0; cursor:pointer; padding:6px; margin:-6px; -webkit-tap-highlight-color:transparent; }
+  .perf-exit:active{ opacity:.5; }
+
+  .pf-tabs{ display:flex; gap:6px; margin-top:40px; }
+  .pf-tab{ font-size:13px; color:var(--gray); letter-spacing:-0.26px; background:none; border:0; padding:7px 14px; cursor:pointer; -webkit-tap-highlight-color:transparent; }
+  .pf-tab.is-active{ color:var(--white); background:var(--divider); }
+
+  .pf-sec{ margin-top:36px; }
+  .pf-sec.rule{ margin-top:0; padding-top:34px; border-top:1px solid var(--divider); }
+  .pf-sec-label{ font-size:13px; color:var(--abbey); letter-spacing:-0.26px; margin-bottom:4px; }
+
+  .pf-kv{ display:flex; align-items:baseline; justify-content:space-between; padding:14px 0; border-top:1px solid var(--divider); }
+  .pf-kv .k{ font-size:13px; color:var(--silver); letter-spacing:-0.26px; }
+  .pf-kv .vv{ display:flex; align-items:baseline; gap:10px; font-feature-settings:'tnum' 1; }
+  .pf-kv .amt{ font-size:15px; color:var(--white); letter-spacing:-0.3px; }
+  .pf-kv .pct{ font-size:13px; color:var(--gray); letter-spacing:-0.26px; min-width:52px; text-align:right; }
+
+  .pf-chart{ margin-top:14px; border:1px solid var(--divider); padding:14px 12px 10px; }
+  .pf-legend{ display:flex; gap:18px; margin-bottom:12px; padding-left:2px; }
+  .pf-leg{ display:flex; align-items:center; gap:7px; font-size:11px; color:var(--gray); letter-spacing:-0.22px; }
+  .pf-leg i{ width:16px; height:0; border-top:1px solid var(--silver); display:inline-block; }
+  .pf-leg.dash i{ border-top:1px dashed var(--gray); }
+  .pf-chart svg{ display:block; width:100%; height:auto; }
+  .pf-ax{ fill:var(--abbey); font-size:9px; letter-spacing:-0.2px; font-family:Inter; }
+
+  .pf-statement{ font-size:15px; color:var(--white); letter-spacing:-0.3px; line-height:1.5; margin-top:2px; }
+  .pf-sub-note{ font-size:13px; color:var(--gray); letter-spacing:-0.22px; line-height:1.55; margin-top:8px; }
+
+  .pf-row{ display:flex; justify-content:space-between; align-items:baseline; padding:13px 0; border-top:1px solid var(--divider); }
+  .pf-row .k{ font-size:13px; color:var(--silver); letter-spacing:-0.26px; }
+  .pf-row .v{ font-size:14px; color:var(--white); letter-spacing:-0.28px; font-feature-settings:'tnum' 1; }
+  .pf-subrow{ display:flex; justify-content:space-between; align-items:baseline; padding:8px 0; }
+  .pf-subrow .k{ font-size:12px; color:var(--gray); letter-spacing:-0.24px; margin-left:14px; }
+  .pf-subrow .v{ font-size:12px; color:var(--gray); letter-spacing:-0.24px; font-feature-settings:'tnum' 1; }
+
+  .pf-table{ margin-top:10px; }
+  .pf-tr{ display:grid; grid-template-columns:1.15fr 1fr 1fr 1fr; align-items:baseline; padding:12px 0; border-top:1px solid var(--divider); font-feature-settings:'tnum' 1; }
+  .pf-tr span{ font-size:13px; color:var(--silver); letter-spacing:-0.26px; }
+  .pf-tr span:not(:first-child){ text-align:right; }
+  .pf-th{ border-top:0; padding:0 0 4px; }
+  .pf-th span{ font-size:11px; color:var(--gray); letter-spacing:-0.22px; }
+  .pf-tr .yr{ color:var(--silver); }
+  .pf-tr .yr em{ font-style:normal; font-size:9.5px; color:var(--abbey); letter-spacing:0.03em; margin-left:6px; text-transform:uppercase; }
+  .pf-tr .al{ color:var(--gray); }
+  .pf-total{ border-top:1px solid #2c2c2c; }
+  .pf-total span{ color:var(--white); }
+  .pf-signal span{ color:var(--abbey); }
+
+  .pf-viewall{ display:flex; justify-content:flex-end; padding:10px 0 0; }
+  .pf-viewall button{ font-size:12px; color:var(--gray); letter-spacing:-0.24px; background:none; border:0; cursor:pointer; padding:4px 0; -webkit-tap-highlight-color:transparent; }
+  .pf-viewall button:active{ opacity:.5; }
+
+  .pf-foot{ margin-top:42px; padding-top:20px; border-top:1px solid var(--divider); font-size:11px; color:var(--abbey); line-height:1.65; letter-spacing:-0.11px; }
+
   /* Bottom-sheet info modal (contained inside the phone screen) */
   .sheet-backdrop{ position:absolute; top:14px; left:14px; right:14px; bottom:14px; border-radius:40px; background:rgba(0,0,0,0.55); opacity:0; pointer-events:none; transition:opacity 240ms ease; z-index:20; }
   .sheet-backdrop.open{ opacity:1; pointer-events:auto; }
@@ -322,6 +405,18 @@
   .h-wt{ font-weight:400; font-size:13px; color:#929292; letter-spacing:-0.26px; }
   .h-name{ display:flex; flex-direction:column; align-items:flex-start; gap:5px; }
   .h-cat{ font-size:11px; color:#929292; letter-spacing:0; line-height:1; }
+  /* Under Review: entry record (date added · entry price) */
+  .h-track{ font-size:11px; color:#929292; letter-spacing:-0.1px; line-height:1.4; font-feature-settings:'tnum' 1; }
+  /* Bottom row: badges (left) + elapsed tracking clock (right) */
+  .h-foot{ display:flex; align-items:center; gap:8px; width:100%; }
+  .h-foot .h-badges{ width:auto; min-width:0; overflow:hidden; }
+  .h-dur{ margin-left:auto; flex:0 0 auto; font-size:11px; color:#565b5e; letter-spacing:-0.1px; font-feature-settings:'tnum' 1; white-space:nowrap; }
+
+  /* Investment case / note line under each active position */
+  .h-case{ font-size:12px; line-height:1.45; letter-spacing:-0.2px; max-width:100%; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+  .h-case.is-case .hc-txt{ color:#c7c7c7; }
+  .h-case.is-note .hc-txt{ color:#929292; }
+  .h-case.is-empty{ color:#565b5e; }
 
   .h-badges{ display:flex; flex-wrap:nowrap; gap:6px; width:100%; }
   .badge{
@@ -368,6 +463,10 @@
     <button class="nav-item" data-scenario="a-loading">Loading · blocks</button>
     <button class="nav-item" data-scenario="a-loading2">Loading · lines</button>
     <button class="nav-item" data-scenario="a-collapsed">Collapsed</button>
+    <h4>Investment case</h4>
+    <button class="nav-item" data-scenario="case-all">All · cases</button>
+    <button class="nav-item" data-scenario="note-all">All · notes</button>
+    <button class="nav-item" data-scenario="empty-all">All · empty</button>
     <h4>Under Review</h4>
     <button class="nav-item" data-scenario="w-empty">Empty</button>
     <button class="nav-item" data-scenario="w-single">1 item</button>
@@ -401,7 +500,7 @@
 
     <!-- Market status -->
     <div class="market-status">
-      <span class="ms-time">10:43 ET</span>
+      <span class="ms-time">10:43:21 ET</span>
       <span class="ms-sep">|</span>
       <span class="ms-item"><span class="ms-dot"></span><span class="ms-lbl">US Open</span></span>
       <span class="ms-item"><span class="ms-dot"></span><span class="ms-lbl">CA Open</span></span>
@@ -492,7 +591,7 @@
           <!-- S&P 500 Benchmark -->
           <div class="bench">
             <div class="bench-head">
-              <div class="bench-title">S&amp;P 500 Benchmark<span class="bench-sub"> · All Accounts</span></div>
+              <div class="bench-title">S&amp;P 500 Benchmark<span class="bench-sub"> · All Accounts · 3y 2m</span></div>
               <span class="bench-chev"><svg viewBox="0 0 6 10" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M1 1L5 5L1 9" stroke="currentColor" stroke-width="1.2"/></svg></span>
             </div>
             <div class="kv"><span class="k">Portfolio Value</span><span class="v">46,777.23</span></div>
@@ -825,10 +924,14 @@
                     <div class="h-line today"><span class="amt">142.30 CAD</span><span class="chg">+1.4%</span></div>
                   </div>
                 </div>
+                <div class="h-track">Mar 12, 2026 · 118.40 CAD</div>
                 <div class="h-note">Watching for re-acceleration in merchant solutions; revisit after the next print.</div>
-                <div class="h-badges">
-                  <span class="badge soon">Earnings</span>
-                  <span class="badge ambient">52 Week High</span>
+                <div class="h-foot">
+                  <div class="h-badges">
+                    <span class="badge soon">Earnings</span>
+                    <span class="badge ambient">52 Week High</span>
+                  </div>
+                  <span class="h-dur">4 mo 5 d</span>
                 </div>
               </div>
 
@@ -841,9 +944,13 @@
                     <div class="h-line today"><span class="amt">41.80 USD</span><span class="chg">+2.2%</span></div>
                   </div>
                 </div>
+                <div class="h-track">Nov 5, 2025 · 33.20 USD</div>
                 <div class="h-note">Valuation rich — wait for a pullback toward the low 30s before initiating.</div>
-                <div class="h-badges">
-                  <span class="badge ambient">Top Mover</span>
+                <div class="h-foot">
+                  <div class="h-badges">
+                    <span class="badge ambient">Top Mover</span>
+                  </div>
+                  <span class="h-dur">8 mo 12 d</span>
                 </div>
               </div>
 
@@ -856,10 +963,14 @@
                     <div class="h-line today"><span class="amt">26.10 USD</span><span class="chg">-8.4%</span></div>
                   </div>
                 </div>
+                <div class="h-track">Jan 8, 2026 · 31.90 USD</div>
                 <div class="h-note">Binary on trial data; currently halted. No action until it reopens and the facts are clear.</div>
-                <div class="h-badges">
-                  <span class="badge critical">Stock Halted</span>
-                  <span class="badge ambient">Top Mover</span>
+                <div class="h-foot">
+                  <div class="h-badges">
+                    <span class="badge critical">Stock Halted</span>
+                    <span class="badge ambient">Top Mover</span>
+                  </div>
+                  <span class="h-dur">6 mo 9 d</span>
                 </div>
               </div>
 
@@ -872,9 +983,13 @@
                     <div class="h-line today"><span class="amt">412.50 USD</span><span class="chg">+1.9%</span></div>
                   </div>
                 </div>
+                <div class="h-track">Feb 20, 2026 · 388.10 USD</div>
                 <div class="h-note">Strong execution; entry only on a reset after the post-earnings move.</div>
-                <div class="h-badges">
-                  <span class="badge soon">Earnings</span>
+                <div class="h-foot">
+                  <div class="h-badges">
+                    <span class="badge soon">Earnings</span>
+                  </div>
+                  <span class="h-dur">4 mo 27 d</span>
                 </div>
               </div>
 
@@ -887,9 +1002,13 @@
                     <div class="h-line today"><span class="amt">13.20 USD</span><span class="chg">-3.6%</span></div>
                   </div>
                 </div>
+                <div class="h-track">Sep 2, 2025 · 15.70 USD</div>
                 <div class="h-note">Cash burn the key risk — track gross-margin trajectory before any starter position.</div>
-                <div class="h-badges">
-                  <span class="badge ambient">52 Week Low</span>
+                <div class="h-foot">
+                  <div class="h-badges">
+                    <span class="badge ambient">52 Week Low</span>
+                  </div>
+                  <span class="h-dur">10 mo 15 d</span>
                 </div>
               </div>
 
@@ -910,6 +1029,142 @@
           <div class="ap-page-title">Active Positions<span class="n"></span></div>
         </div>
         <div class="ap-page-list holdings"></div>
+      </div>
+
+      <div id="perfPage">
+        <div class="perf-head">
+          <button class="ap-back perf-back" aria-label="Back"><svg viewBox="0 0 9 14" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M8 1L2 7L8 13" stroke="currentColor" stroke-width="1.4"/></svg></button>
+          <button class="perf-exit" aria-label="Exit">Exit</button>
+        </div>
+        <div class="perf-body">
+          <div class="perf-title-col">
+            <div class="perf-h1">Performance</div>
+            <div class="perf-h2">Active · Self-Directed</div>
+          </div>
+          <div class="perf-track">
+            <div class="perf-since">Tracked since Mar 14, 2023</div>
+            <div class="perf-dur">3 years 2 months</div>
+          </div>
+          <div class="perf-divider"></div>
+          <div class="perf-annual">Annualized · Preliminary</div>
+          <div class="perf-stats">
+            <div class="perf-stat"><div class="ps-lbl">Your Portfolio</div><div class="ps-val">+18.2%</div></div>
+            <div class="perf-stat center"><div class="ps-lbl">Alpha</div><div class="ps-val">-5.8pp</div></div>
+            <div class="perf-stat right"><div class="ps-lbl">S&amp;P 500</div><div class="ps-val">+24.0%</div></div>
+          </div>
+          <div class="not-yet">
+            <div class="ny-title">Not yet signal</div>
+            <div class="ny-desc">A meaningful active-vs-index track record requires 5 years of history. You're 38 of 60 months in.</div>
+            <div class="ny-foot"><span>38 of 60 months</span><span>Signal · Mar 2028</span></div>
+          </div>
+
+          <!-- Range tabs -->
+          <div class="pf-tabs">
+            <button class="pf-tab">YTD</button>
+            <button class="pf-tab">1Y</button>
+            <button class="pf-tab">3Y</button>
+            <button class="pf-tab is-active">All</button>
+          </div>
+
+          <!-- Performance vs S&P 500 -->
+          <div class="pf-sec">
+            <div class="pf-sec-label">Performance vs S&amp;P 500</div>
+            <div class="pf-kv"><span class="k">Your Portfolio</span><span class="vv"><span class="amt">+8,420.50</span><span class="pct">+18.2%</span></span></div>
+            <div class="pf-kv"><span class="k">S&amp;P Would Have</span><span class="vv"><span class="amt">+11,140.20</span><span class="pct">+24.0%</span></span></div>
+            <div class="pf-kv"><span class="k">Alpha</span><span class="vv"><span class="amt">-2,719.70</span><span class="pct">-5.8pp</span></span></div>
+          </div>
+
+          <!-- Equity Curve -->
+          <div class="pf-sec">
+            <div class="pf-sec-label">Equity Curve</div>
+            <div class="pf-legend">
+              <span class="pf-leg"><i></i>Your Portfolio</span>
+              <span class="pf-leg dash"><i></i>S&amp;P 500</span>
+            </div>
+            <div class="pf-chart">
+              <svg viewBox="0 0 340 158" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+                <text class="pf-ax" x="0" y="14">55k</text>
+                <text class="pf-ax" x="0" y="76">50k</text>
+                <text class="pf-ax" x="0" y="140">45k</text>
+                <line x1="30" y1="10" x2="338" y2="10" stroke="#171717" stroke-width="1"/>
+                <line x1="30" y1="72" x2="338" y2="72" stroke="#171717" stroke-width="1"/>
+                <line x1="30" y1="134" x2="338" y2="134" stroke="#171717" stroke-width="1"/>
+                <!-- S&P 500 (dashed) -->
+                <path d="M32,124 L108,108 L184,80 L262,52 L338,30" fill="none" stroke="#7d7d7d" stroke-width="1.2" stroke-dasharray="4 3"/>
+                <!-- Your Portfolio (solid) -->
+                <path d="M32,124 L108,116 L184,100 L262,84 L338,66" fill="none" stroke="#e6e6e6" stroke-width="1.4"/>
+              </svg>
+              <div class="pf-legend" style="margin:8px 0 0; justify-content:space-between; color:var(--abbey);">
+                <span class="pf-ax" style="font-size:10px;">Mar 23</span>
+                <span class="pf-ax" style="font-size:10px;">Jan 24</span>
+                <span class="pf-ax" style="font-size:10px;">Sep 25</span>
+                <span class="pf-ax" style="font-size:10px;">May 26</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Cash Drag -->
+          <div class="pf-sec">
+            <div class="pf-sec-label">Cash Drag</div>
+            <div class="pf-statement">Cash cost you -1,840.00 in opportunity over this period.</div>
+            <div class="pf-sub-note">Avg 16% cash. S&amp;P returned +24.0% over the same window. Idle capital is a position too.</div>
+          </div>
+
+          <!-- Performance Metrics -->
+          <div class="pf-sec rule">
+            <div class="pf-sec-label">Performance Metrics</div>
+            <div class="pf-row"><span class="k">TWR (annualized)</span><span class="v">+18.2%</span></div>
+            <div class="pf-row"><span class="k">MWR (annualized)</span><span class="v">+16.8%</span></div>
+            <div class="pf-subrow"><span class="k">Timing gap (MWR - TWR)</span><span class="v">-1.4pp</span></div>
+            <div class="pf-row"><span class="k">Max Drawdown</span><span class="v">-18.4%</span></div>
+            <div class="pf-subrow"><span class="k">S&amp;P 500 same window</span><span class="v">-12.1%</span></div>
+            <div class="pf-row"><span class="k">Volatility (12M)</span><span class="v">17.2%</span></div>
+            <div class="pf-subrow"><span class="k">S&amp;P 500</span><span class="v">15.4%</span></div>
+            <div class="pf-row"><span class="k">Avg Cash %</span><span class="v">16%</span></div>
+          </div>
+
+          <!-- Yearly Breakdown -->
+          <div class="pf-sec">
+            <div class="pf-sec-label">Yearly Breakdown</div>
+            <div class="pf-table">
+              <div class="pf-tr pf-th"><span>Year</span><span>Portfolio</span><span>S&amp;P</span><span>Alpha</span></div>
+              <div class="pf-tr"><span class="yr">2026<em>YTD</em></span><span>+5.2%</span><span>+9.4%</span><span class="al">-4.2pp</span></div>
+              <div class="pf-tr"><span class="yr">2025</span><span>+22.4%</span><span>+18.2%</span><span class="al">+4.2pp</span></div>
+              <div class="pf-tr"><span class="yr">2024</span><span>+8.6%</span><span>+24.1%</span><span class="al">-15.5pp</span></div>
+              <div class="pf-tr"><span class="yr">2023</span><span>+18.2%</span><span>+24.2%</span><span class="al">-6.0pp</span></div>
+              <div class="pf-tr pf-total"><span class="yr">Annualized</span><span>+18.2%</span><span>+24.0%</span><span class="al">-5.8pp</span></div>
+              <div class="pf-tr pf-signal"><span class="yr">2028<em>Signal</em></span><span>—</span><span>—</span><span>—</span></div>
+            </div>
+          </div>
+
+          <!-- Decisions -->
+          <div class="pf-sec rule">
+            <div class="pf-sec-label">Decisions</div>
+            <div class="pf-row"><span class="k">Total Positions</span><span class="v">50</span></div>
+            <div class="pf-subrow"><span class="k">Beating / Trailing</span><span class="v">19 / 31</span></div>
+            <div class="pf-row"><span class="k">Win Rate vs S&amp;P</span><span class="v">38.0%</span></div>
+            <div class="pf-subrow"><span class="k">Avg Alpha-Win</span><span class="v">+4,860.00</span></div>
+            <div class="pf-subrow"><span class="k">Avg Alpha-Loss</span><span class="v">-3,640.00</span></div>
+            <div class="pf-row"><span class="k">Open</span><span class="v">12</span></div>
+            <div class="pf-subrow"><span class="k">Beating S&amp;P / Trailing</span><span class="v">5 / 7</span></div>
+            <div class="pf-viewall"><button>View All →</button></div>
+            <div class="pf-row"><span class="k">Closed</span><span class="v">38</span></div>
+            <div class="pf-subrow"><span class="k">Beat S&amp;P (Winners)</span><span class="v">14</span></div>
+            <div class="pf-subrow"><span class="k">Trailed (Losers)</span><span class="v">24</span></div>
+            <div class="pf-viewall"><button>View All →</button></div>
+          </div>
+
+          <!-- Discipline -->
+          <div class="pf-sec rule">
+            <div class="pf-sec-label">Discipline</div>
+            <div class="pf-row"><span class="k">Days Since Last Trade</span><span class="v">47</span></div>
+            <div class="pf-row"><span class="k">Turnover</span><span class="v">42%</span></div>
+            <div class="pf-subrow"><span class="k">S&amp;P 500</span><span class="v">~4%</span></div>
+            <div class="pf-row"><span class="k">Avg Holding Period</span><span class="v">1y 8m</span></div>
+          </div>
+
+          <div class="pf-foot">Time-weighted return (TWR) measures stock-picking. Money-weighted return (MWR) reflects timing of capital deployment; the gap is timing skill. Closed positions use past tense (Beat / Trailed); open positions use present (Beating / Trailing). A meaningful active-vs-index track record requires 5 years of history.</div>
+        </div>
       </div>
     </div>
 
@@ -1006,6 +1261,46 @@
   };
   var currentTicker = 'AAPL';
 
+  // Investment case ('case' = researched thesis) vs note ('note' = informal) vs empty.
+  var CASES = {
+    'ORIO.TO': { type:'case', text:'Parent moat compounding; the NASDAQ listing re-rates it over 3–5 years.' },
+    'BWEN':    { type:'note', text:'Delisting risk — watching the appeal. No add until it clears.' },
+    'EOSCR':   { type:'empty' },
+    'NVDA':    { type:'case', text:'Datacenter demand is structural; margins durable through the cycle.' },
+    'AAPL':    { type:'case', text:'Services mix lifting margins; capital return underpins the floor.' },
+    'AMD':     { type:'note', text:'Trimmed into strength — revisit after the next print.' },
+    'MSFT':    { type:'case', text:'Azure + Copilot compounding seat economics; long runway ahead.' },
+    'GOOGL':   { type:'empty' },
+    'COST':    { type:'case', text:'Renewal above 90% and pricing power that is quietly relentless.' },
+    'V':       { type:'note', text:'Core hold — just tracking cross-border volumes, no action.' },
+    'TSM':     { type:'case', text:'Node leadership plus pricing; irreplaceable in the supply chain.' },
+    'BRK.B':   { type:'empty' },
+    'UNH':     { type:'note', text:'Regulatory headline risk — sized small on purpose.' },
+    'HD':      { type:'case', text:'Pro segment plus a housing turn = a multi-year tailwind.' },
+    'LLY':     { type:'case', text:'Incretin franchise years ahead; capacity is the only limit.' },
+    'ASML':    { type:'empty' },
+    'ADBE':    { type:'note', text:'AI monetization unproven — a small starter only for now.' },
+    'NFLX':    { type:'case', text:'Ads plus paid sharing is a credible second growth act.' },
+    'CRM':     { type:'empty' },
+    'ABNB':    { type:'note', text:'Speculative; watching take-rate before committing more.' }
+  };
+  function injectCases(force) {
+    [].slice.call(activeBox.querySelectorAll('.holding')).forEach(function (h) {
+      var old = h.querySelector('.h-case'); if (old) old.parentNode.removeChild(old);
+      var t = h.getAttribute('data-ticker'); var d = CASES[t] || { type: 'empty' };
+      var type = force || d.type;
+      var el = document.createElement('div'); el.className = 'h-case is-' + type;
+      if (type === 'empty') { el.textContent = 'No investment case'; }
+      else {
+        var txt = (type === d.type && d.text) ? d.text : (type === 'case' ? 'Long-term thesis intact; holding with conviction.' : 'Tracking; no action for now.');
+        el.innerHTML = '<span class="hc-txt"></span>';
+        el.querySelector('.hc-txt').textContent = txt;
+      }
+      var top = h.querySelector('.holding-top');
+      if (top) h.insertBefore(el, top.nextSibling);
+    });
+  }
+
   // Rewrite the embedded stock page header + badges for the tapped ticker.
   function patchStock(t) {
     var d = stockFrame.contentDocument; var p = POSITIONS[t]; if (!d || !p) return;
@@ -1077,13 +1372,21 @@
   function setWatchCount(n) { var el = watchGroup.querySelector('.pos-head .n'); if (el) el.textContent = n; }
   function setOpenOrders(v) { var el = document.querySelector('.open-orders .n'); if (el) el.textContent = v; }
   function hideMore() { var t = document.getElementById('apMore'); if (t) { t.style.display = 'none'; t.onclick = null; t.classList.remove('view-all-cta'); } }
+  var clockTimer = null;
+  function tickClock() {
+    var t = document.querySelector('.market-status .ms-time'); if (!t) return;
+    t.textContent = new Date().toLocaleTimeString('en-US', { timeZone: 'America/New_York', hour12: false, hour: '2-digit', minute: '2-digit', second: '2-digit' }) + ' ET';
+  }
+  function startClock() { if (clockTimer) return; tickClock(); clockTimer = setInterval(tickClock, 1000); }
+  function stopClock() { if (clockTimer) { clearInterval(clockTimer); clockTimer = null; } }
   function setMarkets(open) {
     var ms = document.querySelector('.market-status'); if (!ms) return;
     ms.classList.toggle('closed', !open);
-    var t = ms.querySelector('.ms-time'); if (t) t.textContent = open ? '10:43 ET' : '17:47 ET';
     var l = ms.querySelectorAll('.ms-lbl');
     if (l[0]) l[0].textContent = open ? 'US Open' : 'US Closed';
     if (l[1]) l[1].textContent = open ? 'CA Open' : 'CA Closed';
+    if (open) { startClock(); }
+    else { stopClock(); var t = ms.querySelector('.ms-time'); if (t) t.textContent = '17:47:52 ET'; }
   }
 
   // Sort active rows by weight, cap at 20, wire taps + the "N more" toggle.
@@ -1105,6 +1408,7 @@
   function baseline() {
     frame.classList.remove('mvp1');
     screenEl.classList.remove('show-all');
+    screenEl.classList.remove('show-perf');
     var mSec = document.querySelector('.section.managed'); if (mSec) mSec.classList.remove('core-collapsed');
     active.style.top = '';
     setMarkets(true);
@@ -1114,6 +1418,7 @@
     setOpenOrders('2');
     sortBadges(activeBox); sortBadges(watchBox);
     wireActiveList();
+    injectCases();
     setWatchCount(watchBox.querySelectorAll('.holding').length);
   }
 
@@ -1196,6 +1501,9 @@
     'a-loading':  function () { baseline(); activeBox.innerHTML = loadingRows(5); activeBox.classList.add('loading'); setActiveCount('—'); hideMore(); },
     'a-loading2': function () { baseline(); activeBox.innerHTML = loadingLineRows(5); activeBox.classList.add('loading'); setActiveCount('—'); hideMore(); },
     'a-collapsed':function () { baseline(); activeGroup.classList.add('collapsed'); },
+    'case-all':   function () { baseline(); injectCases('case'); },
+    'note-all':   function () { baseline(); injectCases('note'); },
+    'empty-all':  function () { baseline(); injectCases('empty'); },
     'w-empty':    function () { baseline(); watchBox.innerHTML = '<div class="empty-state">Nothing under review</div>'; setWatchCount(0); },
     'w-single':   function () { baseline(); trimWatch(1); },
     'oo-zero':    function () { baseline(); setOpenOrders('0'); },
@@ -1230,6 +1538,23 @@
   // Full Active Positions page — back to dashboard.
   var apBack = document.querySelector('#allPositions .ap-back');
   if (apBack) apBack.addEventListener('click', function () { screenEl.classList.remove('show-all'); });
+
+  // S&P 500 Benchmark card → Performance detail page.
+  function openPerf() { screenEl.classList.add('show-perf'); screenEl.scrollTop = 0; var p = document.getElementById('perfPage'); if (p) p.scrollTop = 0; }
+  var benchCard = document.querySelector('.bench');
+  if (benchCard) benchCard.addEventListener('click', openPerf);
+  var closePerf = function () { screenEl.classList.remove('show-perf'); };
+  var perfBack = document.querySelector('#perfPage .perf-back');
+  if (perfBack) perfBack.addEventListener('click', closePerf);
+  var perfExit = document.querySelector('#perfPage .perf-exit');
+  if (perfExit) perfExit.addEventListener('click', closePerf);
+  // Range tabs (visual only for now)
+  [].slice.call(document.querySelectorAll('#perfPage .pf-tab')).forEach(function (tab) {
+    tab.addEventListener('click', function () {
+      document.querySelectorAll('#perfPage .pf-tab').forEach(function (t) { t.classList.remove('is-active'); });
+      tab.classList.add('is-active');
+    });
+  });
 
   // Accordion — chevron collapses/expands its pos-group section.
   [].slice.call(document.querySelectorAll('.sec-chevron:not(.core-chevron)')).forEach(function (btn) {
